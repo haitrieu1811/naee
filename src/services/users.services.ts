@@ -1,4 +1,4 @@
-import { WithId } from 'mongodb'
+import { ObjectId, WithId } from 'mongodb'
 
 import { ENV_CONFIG } from '~/constants/config'
 import { TokenType, UserRole, UserStatus, UserVerifyStatus } from '~/constants/enum'
@@ -7,6 +7,7 @@ import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import User from '~/models/schemas/User.schema'
 import databaseService from '~/services/database.services'
 import { hashPassword } from '~/utils/crypto'
+import { sendVerifyEmail } from '~/utils/email'
 import { signToken, verifyToken } from '~/utils/jwt'
 
 type SignToken = {
@@ -64,7 +65,7 @@ class UserService {
     })
   }
 
-  private signEmailVerifyToken({ userId, verify, role, status }: SignToken) {
+  private signVerifyEmailToken({ userId, verify, role, status }: SignToken) {
     return signToken({
       payload: {
         userId,
@@ -112,15 +113,31 @@ class UserService {
 
   async register(data: RegisterReqBody) {
     const { email, password } = data
-    const { insertedId } = await databaseService.users.insertOne(
-      new User({
-        email,
-        password: hashPassword(password)
-      })
-    )
+    const userId = new ObjectId()
+    const verifyEmailToken = await this.signVerifyEmailToken({
+      userId: userId.toString(),
+      verify: UserVerifyStatus.Unverified,
+      role: UserRole.User,
+      status: UserStatus.Active
+    })
+    try {
+      await Promise.all([
+        sendVerifyEmail(email, verifyEmailToken),
+        databaseService.users.insertOne(
+          new User({
+            _id: userId,
+            email,
+            password: hashPassword(password),
+            verifyEmailToken
+          })
+        )
+      ])
+    } catch (error) {
+      console.log(error)
+    }
     const user = await databaseService.users.findOne(
       {
-        _id: insertedId
+        _id: userId
       },
       {
         projection: {

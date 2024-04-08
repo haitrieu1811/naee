@@ -38,6 +38,7 @@
     "typescript": "^5.4.4"
   },
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.549.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-validator": "^7.0.1",

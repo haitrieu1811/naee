@@ -26,6 +26,7 @@ export const isProduction = env === 'production'
 
 export const ENV_CONFIG = {
   PORT: process.env.PORT as string,
+  CLIENT_URL: process.env.CLIENT_URL as string,
   PASSWORD_SECRET: process.env.PASSWORD_SECRET as string,
 
   DB_USERNAME: process.env.DB_USERNAME as string,
@@ -44,5 +45,10 @@ export const ENV_CONFIG = {
   JWT_ACCESS_TOKEN_EXPIRED_IN: process.env.JWT_ACCESS_TOKEN_EXPIRED_IN as string,
   JWT_REFRESH_TOKEN_EXPIRED_IN: process.env.JWT_REFRESH_TOKEN_EXPIRED_IN as string,
   JWT_VERIFY_EMAIL_TOKEN_EXPIRED_IN: process.env.JWT_VERIFY_EMAIL_TOKEN_EXPIRED_IN as string,
-  JWT_FORGOT_PASSWORD_TOKEN_EXPIRED_IN: process.env.JWT_FORGOT_PASSWORD_TOKEN_EXPIRED_IN as string
+  JWT_FORGOT_PASSWORD_TOKEN_EXPIRED_IN: process.env.JWT_FORGOT_PASSWORD_TOKEN_EXPIRED_IN as string,
+
+  AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID as string,
+  AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY as string,
+  AWS_REGION: process.env.AWS_REGION as string,
+  AWS_SES_FROM_ADDRESS: process.env.AWS_SES_FROM_ADDRESS as string
 } as const
