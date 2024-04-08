@@ -4,9 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx nodemon",
+    "dev": "NODE_ENV=development npx nodemon",
+    "dev:stag": "NODE_ENV=staging npx nodemon",
+    "dev:prod": "NODE_ENV=production npx nodemon",
     "build": "rimraf ./dist && tsc && tsc-alias",
-    "start": "node dist/index.js",
+    "start:dev": "NODE_ENV=development node dist/index.js",
+    "start:stag": "NODE_ENV=staging node dist/index.js",
+    "start:prod": "NODE_ENV=production node dist/index.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --check .",
@@ -16,6 +20,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/node": "^20.12.5",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
@@ -29,5 +34,9 @@
     "tsc-alias": "^1.8.8",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
   }
 }
