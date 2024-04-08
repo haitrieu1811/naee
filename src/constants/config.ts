@@ -25,5 +25,9 @@ config({
 export const isProduction = env === 'production'
 
 export const ENV_CONFIG = {
-  PORT: process.env.POST as string
+  PORT: process.env.PORT as string,
+
+  DB_USERNAME: process.env.DB_USERNAME as string,
+  DB_PASSWORD: process.env.DB_PASSWORD as string,
+  DB_NAME: process.env.DB_NAME as string
 } as const

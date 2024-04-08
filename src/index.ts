@@ -2,6 +2,9 @@ import express from 'express'
 
 import { ENV_CONFIG } from '~/constants/config'
 import usersRouter from '~/routes/users.routes'
+import databaseService from '~/services/database.services'
+
+databaseService.connect()
 
 const app = express()
 const port = ENV_CONFIG.PORT || 4000
