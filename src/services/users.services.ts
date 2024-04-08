@@ -3,6 +3,7 @@ import { WithId } from 'mongodb'
 import { ENV_CONFIG } from '~/constants/config'
 import { TokenType, UserRole, UserStatus, UserVerifyStatus } from '~/constants/enum'
 import { RegisterReqBody } from '~/models/requests/Users.requests'
+import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import User from '~/models/schemas/User.schema'
 import databaseService from '~/services/database.services'
 import { hashPassword } from '~/utils/crypto'
@@ -142,6 +143,14 @@ class UserService {
       status,
       role
     })
+    const { iat, exp } = await this.decodeRefreshToken(refreshToken)
+    await databaseService.refreshTokens.insertOne(
+      new RefreshToken({
+        token: refreshToken,
+        iat,
+        exp
+      })
+    )
     return {
       accessToken,
       refreshToken,

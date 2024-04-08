@@ -7,8 +7,8 @@ export type TokenPayload = JwtPayload & {
   role: UserRole
   status: UserStatus
   verify: UserVerifyStatus
-  iat?: number
-  exp?: number
+  iat: number
+  exp: number
 }
 
 export type RegisterReqBody = {
