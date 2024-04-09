@@ -26,5 +26,9 @@ export const USER_MESSAGES = {
   REFRESH_TOKEN_DOES_NOT_EXIST: `Refresh token doesn't exist.`,
   REFRESH_TOKEN_SUCCESS: 'Refresh token successfully.',
   USER_IS_INACTIVE: 'User is inactive.',
-  FORGOT_PASSWORD_SUCCESS: 'We have sent you a password reset email, please check your email.'
+  FORGOT_PASSWORD_SUCCESS: 'We have sent you a password reset email, please check your email.',
+  VERIFY_FORGOT_PASSWORD_SUCCESS: 'Successfully verified the forgot password token.',
+  FORGOT_PASSWORD_TOKEN_IS_REQUIRED: 'Forgot password token is required.',
+  FORGOT_PASSWORD_TOKEN_DOES_NOT_EXIST: `Forgot password token doesn't exist.`,
+  RESET_PASSWORD_SUCCESS: 'Reset password successfully.'
 } as const

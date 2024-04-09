@@ -297,6 +297,46 @@ class UserService {
     ])
     return
   }
+
+  async resetPassword({ password, userId }: { password: string; userId: string }) {
+    const user = await databaseService.users.findOneAndUpdate(
+      {
+        _id: new ObjectId(userId)
+      },
+      {
+        $set: {
+          password: hashPassword(password),
+          forgotPasswordToken: ''
+        },
+        $currentDate: {
+          createdAt: true
+        }
+      }
+    )
+    const { _id, verify, status, role } = user as WithId<User>
+    const [accessToken, refreshToken] = await this.signAccessAndRefreshToken({
+      userId: _id.toString(),
+      verify,
+      role,
+      status
+    })
+    const userConfig = omit(user, [
+      'password',
+      'avatar',
+      'phoneNumber',
+      'verifyEmailToken',
+      'forgotPasswordToken',
+      'addresses',
+      'status',
+      'role',
+      'verify'
+    ])
+    return {
+      accessToken,
+      refreshToken,
+      user: userConfig
+    }
+  }
 }
 
 const userService = new UserService()

@@ -28,3 +28,11 @@ export type LogoutReqBody = {
 export type RefreshTokenReqBody = {
   refreshToken: string
 }
+
+export type ForgotPasswordTokenReqBody = {
+  forgotPasswordToken: string
+}
+
+export type ResetPasswordReqBody = {
+  password: string
+}

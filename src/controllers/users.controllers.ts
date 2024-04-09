@@ -5,10 +5,12 @@ import { WithId } from 'mongodb'
 
 import { USER_MESSAGES } from '~/constants/message'
 import {
+  ForgotPasswordTokenReqBody,
   LoginReqBody,
   LogoutReqBody,
   RefreshTokenReqBody,
   RegisterReqBody,
+  ResetPasswordReqBody,
   TokenPayload
 } from '~/models/requests/Users.requests'
 import User from '~/models/schemas/User.schema'
@@ -97,5 +99,29 @@ export const forgotPasswordController = async (req: Request, res: Response) => {
   })
   return res.json({
     message: USER_MESSAGES.FORGOT_PASSWORD_SUCCESS
+  })
+}
+
+export const verifyForgotPasswordTokenController = async (
+  req: Request<ParamsDictionary, any, ForgotPasswordTokenReqBody>,
+  res: Response
+) => {
+  return res.json({
+    message: USER_MESSAGES.VERIFY_FORGOT_PASSWORD_SUCCESS
+  })
+}
+
+export const resetPasswordController = async (
+  req: Request<ParamsDictionary, any, ResetPasswordReqBody>,
+  res: Response
+) => {
+  const { userId } = req.decodedForgotPasswordToken as TokenPayload
+  const result = await userService.resetPassword({
+    password: req.body.password,
+    userId
+  })
+  return res.json({
+    message: USER_MESSAGES.RESET_PASSWORD_SUCCESS,
+    data: result
   })
 }
