@@ -5,7 +5,7 @@ import {
   logoutController,
   refreshTokenController,
   registerController,
-  resendEmailVerifyUserController,
+  resendEmailVerifyController,
   verifyEmailController
 } from '~/controllers/users.controllers'
 import {
@@ -28,7 +28,7 @@ usersRouter.post(
   '/resend-email-verify',
   accessTokenValidator,
   resendEmailVerifyValidator,
-  wrapRequestHandler(resendEmailVerifyUserController)
+  wrapRequestHandler(resendEmailVerifyController)
 )
 
 usersRouter.post('/verify-email', verifyEmailValidator, wrapRequestHandler(verifyEmailController))

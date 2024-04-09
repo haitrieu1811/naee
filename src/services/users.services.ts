@@ -180,7 +180,7 @@ class UserService {
     }
   }
 
-  async resendEmailVerifyUser(userId: string) {
+  async resendEmailVerify(userId: string) {
     const [verifyEmailToken, user] = await Promise.all([
       this.signVerifyEmailToken(userId),
       databaseService.users.findOne({ _id: new ObjectId(userId) })

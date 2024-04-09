@@ -45,9 +45,9 @@ export const loginController = async (req: Request<ParamsDictionary, any, LoginR
   })
 }
 
-export const resendEmailVerifyUserController = async (req: Request, res: Response) => {
+export const resendEmailVerifyController = async (req: Request, res: Response) => {
   const { userId } = req.decodedAuthorization as TokenPayload
-  await userService.resendEmailVerifyUser(userId)
+  await userService.resendEmailVerify(userId)
   return res.json({
     message: USER_MESSAGES.RESEND_EMAIL_VERIFY_USER_SUCCESS
   })
