@@ -4,7 +4,13 @@ import omit from 'lodash/omit'
 import { WithId } from 'mongodb'
 
 import { USER_MESSAGES } from '~/constants/message'
-import { LoginReqBody, LogoutReqBody, RegisterReqBody, TokenPayload } from '~/models/requests/Users.requests'
+import {
+  LoginReqBody,
+  LogoutReqBody,
+  RefreshTokenReqBody,
+  RegisterReqBody,
+  TokenPayload
+} from '~/models/requests/Users.requests'
 import User from '~/models/schemas/User.schema'
 import userService from '~/services/users.services'
 
@@ -60,5 +66,24 @@ export const logoutController = async (req: Request<ParamsDictionary, any, Logou
   await userService.logout(req.body.refreshToken)
   return res.json({
     message: USER_MESSAGES.LOGOUT_SUCCESS
+  })
+}
+
+export const refreshTokenController = async (
+  req: Request<ParamsDictionary, any, RefreshTokenReqBody>,
+  res: Response
+) => {
+  const { userId, verify, status, role, exp } = req.decodedRefreshToken as TokenPayload
+  const result = await userService.refreshToken({
+    refreshToken: req.body.refreshToken,
+    userId,
+    verify,
+    status,
+    role,
+    refreshTokenExp: exp
+  })
+  return res.json({
+    message: USER_MESSAGES.REFRESH_TOKEN_SUCCESS,
+    data: result
   })
 }
