@@ -121,25 +121,10 @@ export const loginValidator = validate(
         custom: {
           options: async (value, { req }) => {
             const email = req.body.email
-            const user = await databaseService.users.findOne(
-              {
-                email,
-                password: hashPassword(value)
-              },
-              {
-                projection: {
-                  password: 0,
-                  avatar: 0,
-                  phoneNumber: 0,
-                  verifyEmailToken: 0,
-                  forgotPasswordToken: 0,
-                  addresses: 0,
-                  status: 0,
-                  role: 0,
-                  verify: 0
-                }
-              }
-            )
+            const user = await databaseService.users.findOne({
+              email,
+              password: hashPassword(value)
+            })
             if (!user) {
               throw new Error(USER_MESSAGES.PASSWORD_OR_EMAIL_IS_INCORRECT)
             }

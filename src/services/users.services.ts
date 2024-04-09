@@ -1,3 +1,4 @@
+import omit from 'lodash/omit'
 import { ObjectId, WithId } from 'mongodb'
 
 import { ENV_CONFIG } from '~/constants/config'
@@ -123,24 +124,7 @@ class UserService {
         })
       )
     ])
-    const user = await databaseService.users.findOne(
-      {
-        _id: userId
-      },
-      {
-        projection: {
-          password: 0,
-          avatar: 0,
-          phoneNumber: 0,
-          verifyEmailToken: 0,
-          forgotPasswordToken: 0,
-          addresses: 0,
-          status: 0,
-          role: 0,
-          verify: 0
-        }
-      }
-    )
+    const user = await databaseService.users.findOne({ _id: userId })
     const { _id, verify, status, role } = user as WithId<User>
     const [accessToken, refreshToken] = await this.signAccessAndRefreshToken({
       userId: _id.toString(),
@@ -156,10 +140,21 @@ class UserService {
         exp
       })
     )
+    const userConfig = omit(user, [
+      'password',
+      'avatar',
+      'phoneNumber',
+      'verifyEmailToken',
+      'forgotPasswordToken',
+      'addresses',
+      'status',
+      'role',
+      'verify'
+    ])
     return {
       accessToken,
       refreshToken,
-      user
+      user: userConfig
     }
   }
 
@@ -214,19 +209,6 @@ class UserService {
         $currentDate: {
           updatedAt: true
         }
-      },
-      {
-        projection: {
-          password: 0,
-          avatar: 0,
-          phoneNumber: 0,
-          verifyEmailToken: 0,
-          forgotPasswordToken: 0,
-          addresses: 0,
-          status: 0,
-          role: 0,
-          verify: 0
-        }
       }
     )
     const { _id, role, status, verify } = user as WithId<User>
@@ -236,10 +218,21 @@ class UserService {
       status,
       verify
     })
+    const userConfig = omit(user, [
+      'password',
+      'avatar',
+      'phoneNumber',
+      'verifyEmailToken',
+      'forgotPasswordToken',
+      'addresses',
+      'status',
+      'role',
+      'verify'
+    ])
     return {
       accessToken,
       refreshToken,
-      user
+      user: userConfig
     }
   }
 }
