@@ -2,6 +2,7 @@ import { Router } from 'express'
 
 import {
   loginController,
+  logoutController,
   registerController,
   resendEmailVerifyUserController,
   verifyEmailController
@@ -9,6 +10,7 @@ import {
 import {
   accessTokenValidator,
   loginValidator,
+  refreshTokenValidator,
   registerValidator,
   resendEmailVerifyValidator,
   verifyEmailValidator
@@ -29,5 +31,7 @@ usersRouter.post(
 )
 
 usersRouter.post('/verify-email', verifyEmailValidator, wrapRequestHandler(verifyEmailController))
+
+usersRouter.post('/logout', refreshTokenValidator, wrapRequestHandler(logoutController))
 
 export default usersRouter

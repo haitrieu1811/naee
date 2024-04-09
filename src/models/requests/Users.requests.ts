@@ -20,3 +20,7 @@ export type LoginReqBody = {
   email: string
   password: string
 }
+
+export type LogoutReqBody = {
+  refreshToken: string
+}

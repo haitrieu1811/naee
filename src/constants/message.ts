@@ -20,5 +20,8 @@ export const USER_MESSAGES = {
   EMAIL_VERIFICATION_SUCCESS: 'Email verification successful.',
   VERIFY_EMAIL_TOKEN_IS_REQUIRED: 'Verify email token is required.',
   VERIFY_EMAIL_TOKEN_DOES_NOT_EXIST: `Verify email token doesn't exist.`,
-  VERIFIED_USER: 'User has been verified before.'
+  VERIFIED_USER: 'User has been verified before.',
+  LOGOUT_SUCCESS: 'Logout successfully.',
+  REFRESH_TOKEN_IS_REQUIRED: `Refresh token is required.`,
+  REFRESH_TOKEN_DOES_NOT_EXIST: `Refresh token doesn't exist.`
 } as const

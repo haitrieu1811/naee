@@ -4,7 +4,7 @@ import omit from 'lodash/omit'
 import { WithId } from 'mongodb'
 
 import { USER_MESSAGES } from '~/constants/message'
-import { LoginReqBody, RegisterReqBody, TokenPayload } from '~/models/requests/Users.requests'
+import { LoginReqBody, LogoutReqBody, RegisterReqBody, TokenPayload } from '~/models/requests/Users.requests'
 import User from '~/models/schemas/User.schema'
 import userService from '~/services/users.services'
 
@@ -53,5 +53,12 @@ export const verifyEmailController = async (req: Request, res: Response) => {
   return res.json({
     message: USER_MESSAGES.EMAIL_VERIFICATION_SUCCESS,
     data: result
+  })
+}
+
+export const logoutController = async (req: Request<ParamsDictionary, any, LogoutReqBody>, res: Response) => {
+  await userService.logout(req.body.refreshToken)
+  return res.json({
+    message: USER_MESSAGES.LOGOUT_SUCCESS
   })
 }
