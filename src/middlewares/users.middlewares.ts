@@ -2,12 +2,14 @@ import { NextFunction, Request, Response } from 'express'
 import { ParamSchema, checkSchema } from 'express-validator'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import capitalize from 'lodash/capitalize'
+import { WithId } from 'mongodb'
 
 import { ENV_CONFIG } from '~/constants/config'
-import { HttpStatusCode, UserVerifyStatus } from '~/constants/enum'
+import { HttpStatusCode, UserStatus, UserVerifyStatus } from '~/constants/enum'
 import { USER_MESSAGES } from '~/constants/message'
 import { ErrorWithStatus } from '~/models/Errors'
 import { TokenPayload } from '~/models/requests/Users.requests'
+import User from '~/models/schemas/User.schema'
 import databaseService from '~/services/database.services'
 import { hashPassword } from '~/utils/crypto'
 import { verifyToken } from '~/utils/jwt'
@@ -170,6 +172,9 @@ export const loginValidator = validate(
             })
             if (!user) {
               throw new Error(USER_MESSAGES.PASSWORD_OR_EMAIL_IS_INCORRECT)
+            }
+            if (user.status === UserStatus.Inactive) {
+              throw new Error(USER_MESSAGES.USER_IS_INACTIVE)
             }
             ;(req as Request).user = user
             return true
