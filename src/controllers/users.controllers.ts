@@ -34,3 +34,12 @@ export const resendEmailVerifyUserController = async (req: Request, res: Respons
     message: USER_MESSAGES.RESEND_EMAIL_VERIFY_USER_SUCCESS
   })
 }
+
+export const verifyEmailController = async (req: Request, res: Response) => {
+  const { userId } = req.decodedVerifyEmailToken as TokenPayload
+  const result = await userService.verifyEmail(userId)
+  return res.json({
+    message: USER_MESSAGES.EMAIL_VERIFICATION_SUCCESS,
+    data: result
+  })
+}

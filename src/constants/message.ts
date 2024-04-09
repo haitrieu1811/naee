@@ -16,5 +16,8 @@ export const USER_MESSAGES = {
   CONFIRM_PASSWORD_IS_REQUIRED: 'Confirm password is required.',
   CONFIRM_PASSWORD_DOES_NOT_MATCH: `Confirm password doesn't match.`,
   PASSWORD_OR_EMAIL_IS_INCORRECT: 'Email or password is incorrect.',
-  LOGIN_SUCCESS: 'Logged in successfully.'
+  LOGIN_SUCCESS: 'Logged in successfully.',
+  EMAIL_VERIFICATION_SUCCESS: 'Email verification successful.',
+  VERIFY_EMAIL_TOKEN_IS_REQUIRED: 'Verify email token is required.',
+  VERIFY_EMAIL_TOKEN_DOES_NOT_EXIST: `Verify email token doesn't exist.`
 } as const
