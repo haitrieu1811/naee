@@ -65,14 +65,11 @@ class UserService {
     })
   }
 
-  private signVerifyEmailToken({ userId, verify, role, status }: SignToken) {
+  private signVerifyEmailToken(userId: string) {
     return signToken({
       payload: {
         userId,
-        tokenType: TokenType.VerifyEmail,
-        verify,
-        role,
-        status
+        tokenType: TokenType.VerifyEmail
       },
       privateKey: ENV_CONFIG.JWT_VERIFY_EMAIL_TOKEN_SECRET,
       options: {
@@ -114,27 +111,18 @@ class UserService {
   async register(data: RegisterReqBody) {
     const { email, password } = data
     const userId = new ObjectId()
-    const verifyEmailToken = await this.signVerifyEmailToken({
-      userId: userId.toString(),
-      verify: UserVerifyStatus.Unverified,
-      role: UserRole.User,
-      status: UserStatus.Active
-    })
-    try {
-      await Promise.all([
-        sendVerifyEmail(email, verifyEmailToken),
-        databaseService.users.insertOne(
-          new User({
-            _id: userId,
-            email,
-            password: hashPassword(password),
-            verifyEmailToken
-          })
-        )
-      ])
-    } catch (error) {
-      console.log(error)
-    }
+    const verifyEmailToken = await this.signVerifyEmailToken(userId.toString())
+    await Promise.all([
+      sendVerifyEmail(email, verifyEmailToken),
+      databaseService.users.insertOne(
+        new User({
+          _id: userId,
+          email,
+          password: hashPassword(password),
+          verifyEmailToken
+        })
+      )
+    ])
     const user = await databaseService.users.findOne(
       {
         _id: userId
@@ -173,6 +161,44 @@ class UserService {
       refreshToken,
       user
     }
+  }
+
+  async login(user: WithId<User>) {
+    const { _id, verify, role, status } = user
+    const [accessToken, refreshToken] = await this.signAccessAndRefreshToken({
+      userId: _id.toString(),
+      verify,
+      role,
+      status
+    })
+    return {
+      accessToken,
+      refreshToken
+    }
+  }
+
+  async resendEmailVerifyUser(userId: string) {
+    const [verifyEmailToken, user] = await Promise.all([
+      this.signVerifyEmailToken(userId),
+      databaseService.users.findOne({ _id: new ObjectId(userId) })
+    ])
+    await Promise.all([
+      sendVerifyEmail((user as WithId<User>).email, verifyEmailToken),
+      databaseService.users.updateOne(
+        {
+          _id: new ObjectId(userId)
+        },
+        {
+          $set: {
+            verifyEmailToken
+          },
+          $currentDate: {
+            updatedAt: true
+          }
+        }
+      )
+    ])
+    return true
   }
 }
 
