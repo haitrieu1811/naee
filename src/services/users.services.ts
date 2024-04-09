@@ -8,7 +8,7 @@ import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import User from '~/models/schemas/User.schema'
 import databaseService from '~/services/database.services'
 import { hashPassword } from '~/utils/crypto'
-import { sendVerifyEmail } from '~/utils/email'
+import { sendForgotPasswordEmail, sendVerifyEmail } from '~/utils/email'
 import { signToken, verifyToken } from '~/utils/jwt'
 
 type SignToken = {
@@ -79,14 +79,11 @@ class UserService {
     })
   }
 
-  private signForgotPasswordToken({ userId, verify, role, status }: SignToken) {
+  private signForgotPasswordToken(userId: string) {
     return signToken({
       payload: {
         userId,
-        tokenType: TokenType.ForgotPassword,
-        verify,
-        role,
-        status
+        tokenType: TokenType.ForgotPassword
       },
       privateKey: ENV_CONFIG.JWT_FORGOT_PASSWORD_TOKEN_SECRET,
       options: {
@@ -280,6 +277,25 @@ class UserService {
       accessToken: newAccessToken,
       refreshToken: newRefreshToken
     }
+  }
+
+  async forgotPassword({ userId, email }: { userId: string; email: string }) {
+    const forgotPasswordToken = await this.signForgotPasswordToken(userId)
+    await Promise.all([
+      sendForgotPasswordEmail(email, forgotPasswordToken),
+      databaseService.users.updateOne(
+        { _id: new ObjectId(userId) },
+        {
+          $set: {
+            forgotPasswordToken
+          },
+          $currentDate: {
+            updatedAt: true
+          }
+        }
+      )
+    ])
+    return
   }
 }
 

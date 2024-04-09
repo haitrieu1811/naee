@@ -87,3 +87,15 @@ export const refreshTokenController = async (
     data: result
   })
 }
+
+export const forgotPasswordController = async (req: Request, res: Response) => {
+  const user = req.user as WithId<User>
+  const { _id, email } = user
+  await userService.forgotPassword({
+    userId: _id.toString(),
+    email
+  })
+  return res.json({
+    message: USER_MESSAGES.FORGOT_PASSWORD_SUCCESS
+  })
+}

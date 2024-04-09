@@ -25,5 +25,6 @@ export const USER_MESSAGES = {
   REFRESH_TOKEN_IS_REQUIRED: `Refresh token is required.`,
   REFRESH_TOKEN_DOES_NOT_EXIST: `Refresh token doesn't exist.`,
   REFRESH_TOKEN_SUCCESS: 'Refresh token successfully.',
-  USER_IS_INACTIVE: 'User is inactive.'
+  USER_IS_INACTIVE: 'User is inactive.',
+  FORGOT_PASSWORD_SUCCESS: 'We have sent you a password reset email, please check your email.'
 } as const

@@ -2,14 +2,12 @@ import { NextFunction, Request, Response } from 'express'
 import { ParamSchema, checkSchema } from 'express-validator'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import capitalize from 'lodash/capitalize'
-import { WithId } from 'mongodb'
 
 import { ENV_CONFIG } from '~/constants/config'
 import { HttpStatusCode, UserStatus, UserVerifyStatus } from '~/constants/enum'
 import { USER_MESSAGES } from '~/constants/message'
 import { ErrorWithStatus } from '~/models/Errors'
 import { TokenPayload } from '~/models/requests/Users.requests'
-import User from '~/models/schemas/User.schema'
 import databaseService from '~/services/database.services'
 import { hashPassword } from '~/utils/crypto'
 import { verifyToken } from '~/utils/jwt'
@@ -233,6 +231,27 @@ export const verifyEmailValidator = validate(
                 status: HttpStatusCode.Unauthorized
               })
             }
+          }
+        }
+      }
+    },
+    ['body']
+  )
+)
+
+export const forgotPasswordValidator = validate(
+  checkSchema(
+    {
+      email: {
+        ...emailSchema,
+        custom: {
+          options: async (value: string, { req }) => {
+            const user = await databaseService.users.findOne({ email: value })
+            if (!user) {
+              throw new Error(USER_MESSAGES.EMAIL_DOES_NOT_EXIST)
+            }
+            ;(req as Request).user = user
+            return true
           }
         }
       }
