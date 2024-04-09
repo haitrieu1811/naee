@@ -1,12 +1,13 @@
-import { Request } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { ParamSchema, checkSchema } from 'express-validator'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import capitalize from 'lodash/capitalize'
 
 import { ENV_CONFIG } from '~/constants/config'
-import { HttpStatusCode } from '~/constants/enum'
+import { HttpStatusCode, UserVerifyStatus } from '~/constants/enum'
 import { USER_MESSAGES } from '~/constants/message'
 import { ErrorWithStatus } from '~/models/Errors'
+import { TokenPayload } from '~/models/requests/Users.requests'
 import databaseService from '~/services/database.services'
 import { hashPassword } from '~/utils/crypto'
 import { verifyToken } from '~/utils/jwt'
@@ -137,6 +138,19 @@ export const loginValidator = validate(
     ['body']
   )
 )
+
+export const resendEmailVerifyValidator = (req: Request, _: Response, next: NextFunction) => {
+  const { verify } = req.decodedAuthorization as TokenPayload
+  if (verify === UserVerifyStatus.Verified) {
+    next(
+      new ErrorWithStatus({
+        message: USER_MESSAGES.VERIFIED_USER,
+        status: HttpStatusCode.BadRequest
+      })
+    )
+  }
+  next()
+}
 
 export const verifyEmailValidator = validate(
   checkSchema(
