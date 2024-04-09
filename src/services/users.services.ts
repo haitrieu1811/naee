@@ -166,6 +166,14 @@ class UserService {
       role,
       status
     })
+    const { iat, exp } = await this.decodeRefreshToken(refreshToken)
+    await databaseService.refreshTokens.insertOne(
+      new RefreshToken({
+        token: refreshToken,
+        iat,
+        exp
+      })
+    )
     return {
       accessToken,
       refreshToken
