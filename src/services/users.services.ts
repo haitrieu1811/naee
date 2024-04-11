@@ -3,7 +3,7 @@ import { ObjectId, WithId } from 'mongodb'
 
 import { ENV_CONFIG } from '~/constants/config'
 import { TokenType, UserRole, UserStatus, UserVerifyStatus } from '~/constants/enum'
-import { RegisterReqBody } from '~/models/requests/Users.requests'
+import { RegisterReqBody } from '~/models/requests/User.requests'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import User from '~/models/schemas/User.schema'
 import databaseService from '~/services/database.services'

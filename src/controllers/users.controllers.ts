@@ -13,7 +13,7 @@ import {
   RegisterReqBody,
   ResetPasswordReqBody,
   TokenPayload
-} from '~/models/requests/Users.requests'
+} from '~/models/requests/User.requests'
 import User from '~/models/schemas/User.schema'
 import userService from '~/services/users.services'
 
