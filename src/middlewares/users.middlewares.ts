@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { ParamSchema, checkSchema } from 'express-validator'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import capitalize from 'lodash/capitalize'
+import { ObjectId } from 'mongodb'
 
 import { ENV_CONFIG } from '~/constants/config'
 import { HttpStatusCode, UserStatus, UserVerifyStatus } from '~/constants/enum'
@@ -307,6 +308,35 @@ export const forgotPasswordTokenValidator = validate(
 export const resetPasswordValidator = validate(
   checkSchema(
     {
+      password: passwordSchema,
+      confirmPassword: confirmPasswordSchema
+    },
+    ['body']
+  )
+)
+
+export const changePasswordValidator = validate(
+  checkSchema(
+    {
+      oldPassword: {
+        trim: true,
+        notEmpty: {
+          errorMessage: USER_MESSAGES.OLD_PASSWORD_IS_REQUIRED
+        },
+        custom: {
+          options: async (value: string, { req }) => {
+            const { userId } = (req as Request).decodedAuthorization as TokenPayload
+            const user = await databaseService.users.findOne({
+              _id: new ObjectId(userId),
+              password: hashPassword(value)
+            })
+            if (!user) {
+              throw new Error(USER_MESSAGES.OLD_PASSWORD_IS_INCORRECT)
+            }
+            return true
+          }
+        }
+      },
       password: passwordSchema,
       confirmPassword: confirmPasswordSchema
     },

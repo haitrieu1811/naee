@@ -5,6 +5,7 @@ import { WithId } from 'mongodb'
 
 import { USER_MESSAGES } from '~/constants/message'
 import {
+  ChangePasswordReqBody,
   ForgotPasswordTokenReqBody,
   LoginReqBody,
   LogoutReqBody,
@@ -122,6 +123,21 @@ export const resetPasswordController = async (
   })
   return res.json({
     message: USER_MESSAGES.RESET_PASSWORD_SUCCESS,
+    data: result
+  })
+}
+
+export const changePasswordController = async (
+  req: Request<ParamsDictionary, any, ChangePasswordReqBody>,
+  res: Response
+) => {
+  const { userId } = req.decodedAuthorization as TokenPayload
+  const result = await userService.changePassword({
+    userId,
+    password: req.body.password
+  })
+  return res.json({
+    message: USER_MESSAGES.CHANGE_PASSWORD_SUCCESS,
     data: result
   })
 }

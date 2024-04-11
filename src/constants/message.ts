@@ -30,5 +30,8 @@ export const USER_MESSAGES = {
   VERIFY_FORGOT_PASSWORD_SUCCESS: 'Successfully verified the forgot password token.',
   FORGOT_PASSWORD_TOKEN_IS_REQUIRED: 'Forgot password token is required.',
   FORGOT_PASSWORD_TOKEN_DOES_NOT_EXIST: `Forgot password token doesn't exist.`,
-  RESET_PASSWORD_SUCCESS: 'Reset password successfully.'
+  RESET_PASSWORD_SUCCESS: 'Reset password successfully.',
+  CHANGE_PASSWORD_SUCCESS: 'Password changed successfully.',
+  OLD_PASSWORD_IS_REQUIRED: 'Old password is required.',
+  OLD_PASSWORD_IS_INCORRECT: 'The old password is incorrect.'
 } as const

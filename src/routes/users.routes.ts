@@ -1,6 +1,7 @@
 import { Router } from 'express'
 
 import {
+  changePasswordController,
   forgotPasswordController,
   loginController,
   logoutController,
@@ -13,6 +14,7 @@ import {
 } from '~/controllers/users.controllers'
 import {
   accessTokenValidator,
+  changePasswordValidator,
   forgotPasswordTokenValidator,
   forgotPasswordValidator,
   loginValidator,
@@ -56,6 +58,13 @@ usersRouter.patch(
   forgotPasswordTokenValidator,
   resetPasswordValidator,
   wrapRequestHandler(resetPasswordController)
+)
+
+usersRouter.patch(
+  '/change-password',
+  accessTokenValidator,
+  changePasswordValidator,
+  wrapRequestHandler(changePasswordController)
 )
 
 export default usersRouter

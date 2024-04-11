@@ -36,3 +36,7 @@ export type ForgotPasswordTokenReqBody = {
 export type ResetPasswordReqBody = {
   password: string
 }
+
+export type ChangePasswordReqBody = {
+  password: string
+}
