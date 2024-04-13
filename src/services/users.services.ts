@@ -369,6 +369,30 @@ class UserService {
       user
     }
   }
+
+  async getMe(userId: string) {
+    const user = await databaseService.users.findOne(
+      {
+        _id: new ObjectId(userId)
+      },
+      {
+        projection: {
+          password: 0,
+          avatar: 0,
+          phoneNumber: 0,
+          verifyEmailToken: 0,
+          forgotPasswordToken: 0,
+          addresses: 0,
+          status: 0,
+          role: 0,
+          verify: 0
+        }
+      }
+    )
+    return {
+      user
+    }
+  }
 }
 
 const userService = new UserService()

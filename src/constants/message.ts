@@ -33,5 +33,6 @@ export const USER_MESSAGES = {
   RESET_PASSWORD_SUCCESS: 'Reset password successfully.',
   CHANGE_PASSWORD_SUCCESS: 'Password changed successfully.',
   OLD_PASSWORD_IS_REQUIRED: 'Old password is required.',
-  OLD_PASSWORD_IS_INCORRECT: 'The old password is incorrect.'
+  OLD_PASSWORD_IS_INCORRECT: 'The old password is incorrect.',
+  GET_ME_SUCCESS: 'Retrieve my account information successfully.'
 } as const
