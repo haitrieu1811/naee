@@ -1,9 +1,11 @@
 import omit from 'lodash/omit'
 import { ObjectId, WithId } from 'mongodb'
+import omitBy from 'lodash/omitBy'
+import isUndefined from 'lodash/isUndefined'
 
 import { ENV_CONFIG } from '~/constants/config'
 import { TokenType, UserRole, UserStatus, UserVerifyStatus } from '~/constants/enum'
-import { RegisterReqBody } from '~/models/requests/User.requests'
+import { RegisterReqBody, UpdateMeReqBody } from '~/models/requests/User.requests'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import User from '~/models/schemas/User.schema'
 import databaseService from '~/services/database.services'
@@ -376,6 +378,44 @@ class UserService {
         _id: new ObjectId(userId)
       },
       {
+        projection: {
+          password: 0,
+          avatar: 0,
+          phoneNumber: 0,
+          verifyEmailToken: 0,
+          forgotPasswordToken: 0,
+          addresses: 0,
+          status: 0,
+          role: 0,
+          verify: 0
+        }
+      }
+    )
+    return {
+      user
+    }
+  }
+
+  async updateMe({ dto, userId }: { dto: UpdateMeReqBody; userId: string }) {
+    const dtoConfig = omitBy(
+      {
+        ...dto,
+        avatar: dto.avatar ? new ObjectId(dto.avatar) : undefined
+      },
+      isUndefined
+    )
+    const user = await databaseService.users.findOneAndUpdate(
+      {
+        _id: new ObjectId(userId)
+      },
+      {
+        $set: dtoConfig,
+        $currentDate: {
+          updatedAt: true
+        }
+      },
+      {
+        returnDocument: 'after',
         projection: {
           password: 0,
           avatar: 0,

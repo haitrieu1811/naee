@@ -7,6 +7,7 @@ import { ObjectId } from 'mongodb'
 import { ENV_CONFIG } from '~/constants/config'
 import { HttpStatusCode, UserStatus, UserVerifyStatus } from '~/constants/enum'
 import { USER_MESSAGES } from '~/constants/message'
+import { VIET_NAM_PHONE_NUMBER_REGEX } from '~/constants/regex'
 import { ErrorWithStatus } from '~/models/Errors'
 import { TokenPayload } from '~/models/requests/User.requests'
 import databaseService from '~/services/database.services'
@@ -339,6 +340,42 @@ export const changePasswordValidator = validate(
       },
       password: passwordSchema,
       confirmPassword: confirmPasswordSchema
+    },
+    ['body']
+  )
+)
+
+export const updateMeValidator = validate(
+  checkSchema(
+    {
+      fullName: {
+        optional: true,
+        trim: true
+      },
+      phoneNumber: {
+        optional: true,
+        trim: true,
+        custom: {
+          options: async (value: string, { req }) => {
+            if (!VIET_NAM_PHONE_NUMBER_REGEX.test(value)) {
+              throw new Error(USER_MESSAGES.PHONE_NUMBER_IS_INVALID)
+            }
+            const { userId } = (req as Request).decodedAuthorization as TokenPayload
+            const user = await databaseService.users.findOne({ phoneNumber: value })
+            if (user && user._id.toString() !== userId) {
+              throw new Error(USER_MESSAGES.PHONE_NUMBER_ALREADY_EXISTS)
+            }
+            return true
+          }
+        }
+      },
+      avatar: {
+        optional: true,
+        trim: true,
+        isMongoId: {
+          errorMessage: USER_MESSAGES.AVATAR_IS_INVALID
+        }
+      }
     },
     ['body']
   )

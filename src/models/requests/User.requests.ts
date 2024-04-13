@@ -40,3 +40,9 @@ export type ResetPasswordReqBody = {
 export type ChangePasswordReqBody = {
   password: string
 }
+
+export type UpdateMeReqBody = {
+  phoneNumber?: string
+  fullName?: string
+  avatar?: string
+}

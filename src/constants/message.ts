@@ -34,5 +34,9 @@ export const USER_MESSAGES = {
   CHANGE_PASSWORD_SUCCESS: 'Password changed successfully.',
   OLD_PASSWORD_IS_REQUIRED: 'Old password is required.',
   OLD_PASSWORD_IS_INCORRECT: 'The old password is incorrect.',
-  GET_ME_SUCCESS: 'Retrieve my account information successfully.'
+  GET_ME_SUCCESS: 'Retrieve my account information successfully.',
+  UDPATE_ME_SUCCESS: 'Updated my account information successfully.',
+  PHONE_NUMBER_IS_INVALID: 'Invalid phone number.',
+  PHONE_NUMBER_ALREADY_EXISTS: 'Phone number already exists.',
+  AVATAR_IS_INVALID: 'Invalid avatar.'
 } as const
