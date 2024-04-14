@@ -24,6 +24,32 @@ class DatabaseService {
     }
   }
 
+  async indexUsers() {
+    const isExists = await this.users.indexExists([
+      'email_1',
+      'email_1_password_1',
+      'verifyEmailToken_1',
+      'forgotPasswordToken_1',
+      '_id_password_1',
+      'phoneNumber_1'
+    ])
+    if (isExists) return
+    await Promise.all([
+      this.users.createIndex({ email: 1 }, { unique: true }),
+      this.users.createIndex({ email: 1, password: 1 }),
+      this.users.createIndex({ verifyEmailToken: 1 }),
+      this.users.createIndex({ forgotPasswordToken: 1 }),
+      this.users.createIndex({ _id: 1, password: 1 }),
+      this.users.createIndex({ phoneNumber: 1 }, { unique: true })
+    ])
+  }
+
+  async indexRefreshTokens() {
+    const isExists = await this.refreshTokens.indexExists(['token_1'])
+    if (isExists) return
+    await Promise.all([this.refreshTokens.createIndex({ token: 1 }, { expireAfterSeconds: 0 })])
+  }
+
   get users(): Collection<User> {
     return this.db.collection(ENV_CONFIG.DB_USERS_COLLECTION_NAME)
   }

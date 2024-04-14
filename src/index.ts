@@ -5,7 +5,10 @@ import { defaultErrorHandler } from '~/middlewares/error.middlewares'
 import usersRouter from '~/routes/users.routes'
 import databaseService from '~/services/database.services'
 
-databaseService.connect()
+databaseService.connect().then(() => {
+  databaseService.indexUsers()
+  databaseService.indexRefreshTokens()
+})
 
 const app = express()
 const port = ENV_CONFIG.PORT || 4000
