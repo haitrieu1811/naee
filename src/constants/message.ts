@@ -68,5 +68,6 @@ export const ADDRESS_MESSAGES = {
   ADDRESS_ID_IS_REQUIRED: 'Address id is required.',
   ADDRESS_ID_IS_INVALID: 'Invalid address id.',
   ADDRESS_NOT_FOUND: 'Address not found.',
-  PERMISSION_DENIED: 'Permission denied.'
+  PERMISSION_DENIED: 'Permission denied.',
+  DELETE_ADDRESS_SUCCESS: 'Address deleted successfully.'
 }

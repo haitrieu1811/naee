@@ -57,6 +57,11 @@ class AddressService {
       address: updatedAddress
     }
   }
+
+  async delete(addressId: string) {
+    await databaseService.addresses.deleteOne({ _id: new ObjectId(addressId) })
+    return true
+  }
 }
 
 const addressService = new AddressService()

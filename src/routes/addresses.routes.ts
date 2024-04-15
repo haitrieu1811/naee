@@ -1,6 +1,10 @@
 import { Router } from 'express'
 
-import { createAddressController, updateAddressController } from '~/controllers/addresses.controllers'
+import {
+  createAddressController,
+  deleteAddressController,
+  updateAddressController
+} from '~/controllers/addresses.controllers'
 import { addressIdValidator, createAddressValidator } from '~/middlewares/addresses.middlewares'
 import { filterReqBodyMiddleware } from '~/middlewares/common.middlewares'
 import { accessTokenValidator } from '~/middlewares/users.middlewares'
@@ -28,6 +32,13 @@ addressesRouter.put(
     'wardId'
   ]),
   wrapRequestHandler(updateAddressController)
+)
+
+addressesRouter.delete(
+  '/:addressId',
+  accessTokenValidator,
+  addressIdValidator,
+  wrapRequestHandler(deleteAddressController)
 )
 
 export default addressesRouter

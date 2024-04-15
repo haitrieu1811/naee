@@ -28,3 +28,10 @@ export const updateAddressController = async (
     data: result
   })
 }
+
+export const deleteAddressController = async (req: Request<AddressIdReqParams>, res: Response) => {
+  await addressService.delete(req.params.addressId)
+  return res.json({
+    message: ADDRESS_MESSAGES.DELETE_ADDRESS_SUCCESS
+  })
+}
