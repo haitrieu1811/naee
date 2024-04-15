@@ -89,3 +89,8 @@ export enum UserVerifyStatus {
   Verified,
   Unverified
 }
+
+export enum FileType {
+  Image,
+  Video
+}

@@ -40,3 +40,9 @@ export const USER_MESSAGES = {
   PHONE_NUMBER_ALREADY_EXISTS: 'Phone number already exists.',
   AVATAR_IS_INVALID: 'Invalid avatar.'
 } as const
+
+export const FILE_MESSAGES = {
+  IMAGE_FILE_TYPE_INVALID: 'Invalid image file type.',
+  IMAGE_FIELD_IS_REQUIRED: 'Image field is required.',
+  UPLOAD_IMAGE_SUCCESS: 'Image uploaded successfully.'
+}
