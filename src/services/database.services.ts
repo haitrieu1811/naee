@@ -1,7 +1,9 @@
 import { Collection, Db, MongoClient } from 'mongodb'
 
 import { ENV_CONFIG } from '~/constants/config'
+import Address from '~/models/schemas/Address.schema'
 import File from '~/models/schemas/File.schema'
+import { Province } from '~/models/schemas/Province.schema'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import User from '~/models/schemas/User.schema'
 
@@ -61,6 +63,14 @@ class DatabaseService {
 
   get files(): Collection<File> {
     return this.db.collection(ENV_CONFIG.DB_FILES_COLLECTION_NAME)
+  }
+
+  get addresses(): Collection<Address> {
+    return this.db.collection(ENV_CONFIG.DB_ADDRESSES_COLLECTION_NAME)
+  }
+
+  get provinces(): Collection<Province> {
+    return this.db.collection(ENV_CONFIG.DB_PROVINCES_COLLECTION_NAME)
   }
 }
 

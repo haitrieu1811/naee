@@ -46,3 +46,22 @@ export const FILE_MESSAGES = {
   IMAGE_FIELD_IS_REQUIRED: 'Image field is required.',
   UPLOAD_IMAGE_SUCCESS: 'Image uploaded successfully.'
 }
+
+export const ADDRESS_MESSAGES = {
+  CREATE_ADDRESS_SUCCESS: 'Address created successfully.',
+  FULLNAME_IS_REQUIRED: 'Fullname is required.',
+  PHONE_NUMBER_IS_REQUIRED: 'Phone number is required.',
+  PHONE_NUMBER_IS_INVALID: 'Invalid phone number.',
+  ADDRESS_TYPE_IS_REQUIRED: 'Address type is required.',
+  ADDRESS_TYPE_IS_INVALID: 'Invalid address type.',
+  PROVINCE_ID_IS_REQUIRED: 'Province id is required.',
+  PROVINCE_ID_IS_INVALID: 'Invalid province id.',
+  PROVINCE_NOT_FOUND: 'Province not found.',
+  DISTRICT_ID_IS_REQUIRED: 'District id is required.',
+  DISTRICT_ID_IS_INVALID: 'Invalid district id.',
+  WARD_ID_IS_REQUIRED: 'Ward id is required.',
+  WARD_ID_IS_INVALID: 'Invalid ward id.',
+  SPECIFIC_ADDRESS_IS_REQUIRED: 'Spetific adddress is required.',
+  STREET_ID_IS_INVALID: 'Invalid street id.',
+  IS_DEFAULT_MUST_BE_A_BOOLEAN: 'Is default value must be a boolean.'
+}
