@@ -38,7 +38,8 @@ export const USER_MESSAGES = {
   UDPATE_ME_SUCCESS: 'Updated my account information successfully.',
   PHONE_NUMBER_IS_INVALID: 'Invalid phone number.',
   PHONE_NUMBER_ALREADY_EXISTS: 'Phone number already exists.',
-  AVATAR_IS_INVALID: 'Invalid avatar.'
+  AVATAR_IS_INVALID: 'Invalid avatar.',
+  USER_IS_UNVERIFIED: 'Your account has not been verified.'
 } as const
 
 export const FILE_MESSAGES = {

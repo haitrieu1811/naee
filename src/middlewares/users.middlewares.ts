@@ -137,6 +137,19 @@ export const refreshTokenValidator = validate(
   )
 )
 
+export const verifiedUserValidator = (req: Request, _: Response, next: NextFunction) => {
+  const { verify } = req.decodedAuthorization as TokenPayload
+  if (verify === UserVerifyStatus.Unverified) {
+    next(
+      new ErrorWithStatus({
+        message: USER_MESSAGES.USER_IS_UNVERIFIED,
+        status: HttpStatusCode.Forbidden
+      })
+    )
+  }
+  next()
+}
+
 export const registerValidator = validate(
   checkSchema(
     {
