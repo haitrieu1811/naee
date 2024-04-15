@@ -33,6 +33,30 @@ class AddressService {
       address: addedAddress
     }
   }
+
+  async update({ dto, addressId }: { dto: CreateAddressReqBody; addressId: string }) {
+    const dtoConfig = {
+      ...dto,
+      provinceId: new ObjectId(dto.provinceId)
+    }
+    const updatedAddress = await databaseService.addresses.findOneAndUpdate(
+      {
+        _id: new ObjectId(addressId)
+      },
+      {
+        $set: dtoConfig,
+        $currentDate: {
+          updatedAt: true
+        }
+      },
+      {
+        returnDocument: 'after'
+      }
+    )
+    return {
+      address: updatedAddress
+    }
+  }
 }
 
 const addressService = new AddressService()

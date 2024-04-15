@@ -1,3 +1,4 @@
+import { Request } from 'express'
 import { checkSchema } from 'express-validator'
 import isBoolean from 'lodash/isBoolean'
 import { ObjectId } from 'mongodb'
@@ -6,6 +7,7 @@ import { AddressType, HttpStatusCode } from '~/constants/enum'
 import { ADDRESS_MESSAGES } from '~/constants/message'
 import { VIET_NAM_PHONE_NUMBER_REGEX } from '~/constants/regex'
 import { ErrorWithStatus } from '~/models/Errors'
+import { TokenPayload } from '~/models/requests/User.requests'
 import databaseService from '~/services/database.services'
 import { numberEnumToArray } from '~/utils/utils'
 import { validate } from '~/utils/validation'
@@ -132,5 +134,47 @@ export const createAddressValidator = validate(
       }
     },
     ['body']
+  )
+)
+
+export const addressIdValidator = validate(
+  checkSchema(
+    {
+      addressId: {
+        trim: true,
+        custom: {
+          options: async (value: string, { req }) => {
+            if (!value) {
+              throw new ErrorWithStatus({
+                message: ADDRESS_MESSAGES.ADDRESS_ID_IS_REQUIRED,
+                status: HttpStatusCode.BadRequest
+              })
+            }
+            if (!ObjectId.isValid(value)) {
+              throw new ErrorWithStatus({
+                message: ADDRESS_MESSAGES.ADDRESS_ID_IS_INVALID,
+                status: HttpStatusCode.BadRequest
+              })
+            }
+            const address = await databaseService.addresses.findOne({ _id: new ObjectId(value) })
+            if (!address) {
+              throw new ErrorWithStatus({
+                message: ADDRESS_MESSAGES.ADDRESS_NOT_FOUND,
+                status: HttpStatusCode.NotFound
+              })
+            }
+            const { userId } = (req as Request).decodedAuthorization as TokenPayload
+            if (address.userId.toString() !== userId) {
+              throw new ErrorWithStatus({
+                message: ADDRESS_MESSAGES.PERMISSION_DENIED,
+                status: HttpStatusCode.Forbidden
+              })
+            }
+            return true
+          }
+        }
+      }
+    },
+    ['params']
   )
 )

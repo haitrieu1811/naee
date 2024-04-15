@@ -1,3 +1,4 @@
+import { ParamsDictionary } from 'express-serve-static-core'
 import { AddressType } from '~/constants/enum'
 
 export type CreateAddressReqBody = {
@@ -10,4 +11,8 @@ export type CreateAddressReqBody = {
   streetId?: string
   specificAddress: string
   isDefault?: boolean
+}
+
+export type AddressIdReqParams = ParamsDictionary & {
+  addressId: string
 }

@@ -63,5 +63,10 @@ export const ADDRESS_MESSAGES = {
   WARD_ID_IS_INVALID: 'Invalid ward id.',
   SPECIFIC_ADDRESS_IS_REQUIRED: 'Spetific adddress is required.',
   STREET_ID_IS_INVALID: 'Invalid street id.',
-  IS_DEFAULT_MUST_BE_A_BOOLEAN: 'Is default value must be a boolean.'
+  IS_DEFAULT_MUST_BE_A_BOOLEAN: 'Is default value must be a boolean.',
+  UPDATE_ADDRESS_SUCCESS: 'Address updated successfully.',
+  ADDRESS_ID_IS_REQUIRED: 'Address id is required.',
+  ADDRESS_ID_IS_INVALID: 'Invalid address id.',
+  ADDRESS_NOT_FOUND: 'Address not found.',
+  PERMISSION_DENIED: 'Permission denied.'
 }
