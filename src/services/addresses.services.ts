@@ -216,6 +216,140 @@ class AddressService {
       totalPages: Math.ceil(totalRows / limit)
     }
   }
+
+  async getOne(addressId: string) {
+    const addresses = await databaseService.addresses
+      .aggregate([
+        {
+          $match: {
+            _id: new ObjectId(addressId)
+          }
+        },
+        {
+          $lookup: {
+            from: 'provinces',
+            localField: 'provinceId',
+            foreignField: '_id',
+            as: 'province'
+          }
+        },
+        {
+          $unwind: {
+            path: '$province'
+          }
+        },
+        {
+          $addFields: {
+            district: {
+              $filter: {
+                input: '$province.districts',
+                as: 'district',
+                cond: {
+                  $eq: ['$$district.id', '$districtId']
+                }
+              }
+            }
+          }
+        },
+        {
+          $unwind: {
+            path: '$district'
+          }
+        },
+        {
+          $addFields: {
+            ward: {
+              $filter: {
+                input: '$district.wards',
+                as: 'ward',
+                cond: {
+                  $eq: ['$$ward.id', '$wardId']
+                }
+              }
+            }
+          }
+        },
+        {
+          $unwind: {
+            path: '$ward'
+          }
+        },
+        {
+          $addFields: {
+            street: {
+              $filter: {
+                input: '$district.streets',
+                as: 'street',
+                cond: {
+                  $eq: ['$$street.id', '$streetId']
+                }
+              }
+            }
+          }
+        },
+        {
+          $unwind: {
+            path: '$street',
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $group: {
+            _id: '$_id',
+            fullName: {
+              $first: '$fullName'
+            },
+            phoneNumber: {
+              $first: '$phoneNumber'
+            },
+            type: {
+              $first: '$type'
+            },
+            province: {
+              $first: '$province'
+            },
+            district: {
+              $first: '$district'
+            },
+            ward: {
+              $first: '$ward'
+            },
+            street: {
+              $first: '$street'
+            },
+            specificAddress: {
+              $first: '$specificAddress'
+            },
+            isDefault: {
+              $first: '$isDefault'
+            },
+            createdAt: {
+              $first: '$createdAt'
+            },
+            updatedAt: {
+              $first: '$updatedAt'
+            }
+          }
+        },
+        {
+          $project: {
+            'province._id': 0,
+            'province.id': 0,
+            'province.districts': 0,
+            'district.id': 0,
+            'district.wards': 0,
+            'district.streets': 0,
+            'district.projects': 0,
+            'ward.id': 0,
+            'street.id': 0
+          }
+        }
+      ])
+      .toArray()
+    return {
+      address: addresses[0]
+    }
+  }
 }
 
 const addressService = new AddressService()

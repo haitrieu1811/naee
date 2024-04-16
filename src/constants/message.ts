@@ -73,5 +73,6 @@ export const ADDRESS_MESSAGES = {
   ADDRESS_NOT_FOUND: 'Address not found.',
   PERMISSION_DENIED: 'Permission denied.',
   DELETE_ADDRESS_SUCCESS: 'Address deleted successfully.',
-  GET_ALL_ADDRESSES_SUCCESS: 'Get all addresses successfully.'
+  GET_ALL_ADDRESSES_SUCCESS: 'Get all addresses successfully.',
+  GET_ONE_ADDRESS_SUCCESS: 'Get address successfully.'
 }

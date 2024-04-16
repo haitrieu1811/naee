@@ -4,6 +4,7 @@ import {
   createAddressController,
   deleteAddressController,
   getAllAddresesController,
+  getOneAddressController,
   updateAddressController
 } from '~/controllers/addresses.controllers'
 import { addressIdValidator, createAddressValidator } from '~/middlewares/addresses.middlewares'
@@ -56,6 +57,14 @@ addressesRouter.get(
   verifiedUserValidator,
   paginationValidator,
   wrapRequestHandler(getAllAddresesController)
+)
+
+addressesRouter.get(
+  '/:addressId',
+  accessTokenValidator,
+  verifiedUserValidator,
+  addressIdValidator,
+  wrapRequestHandler(getOneAddressController)
 )
 
 export default addressesRouter

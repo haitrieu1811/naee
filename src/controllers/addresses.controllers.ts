@@ -51,3 +51,11 @@ export const getAllAddresesController = async (
     }
   })
 }
+
+export const getOneAddressController = async (req: Request<AddressIdReqParams>, res: Response) => {
+  const result = await addressService.getOne(req.params.addressId)
+  return res.json({
+    message: ADDRESS_MESSAGES.GET_ONE_ADDRESS_SUCCESS,
+    data: result
+  })
+}
