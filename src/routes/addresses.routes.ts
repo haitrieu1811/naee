@@ -7,6 +7,7 @@ import {
   getDistrictsController,
   getOneAddressController,
   getProvincesController,
+  getStreetsController,
   getWardsController,
   updateAddressController
 } from '~/controllers/addresses.controllers'
@@ -67,6 +68,8 @@ addressesRouter.get('/provinces', wrapRequestHandler(getProvincesController))
 addressesRouter.get('/provinces/:provinceId/districts', wrapRequestHandler(getDistrictsController))
 
 addressesRouter.get('/provinces/:provinceId/districts/:districtId/wards', wrapRequestHandler(getWardsController))
+
+addressesRouter.get('/provinces/:provinceId/districts/:districtId/streets', wrapRequestHandler(getStreetsController))
 
 addressesRouter.get(
   '/:addressId',
