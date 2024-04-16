@@ -60,8 +60,23 @@ class AddressService {
     }
   }
 
-  async delete(addressId: string) {
-    await databaseService.addresses.deleteOne({ _id: new ObjectId(addressId) })
+  async delete({ addressId, userId }: { addressId: string; userId: string }) {
+    await Promise.all([
+      databaseService.addresses.deleteOne({ _id: new ObjectId(addressId) }),
+      databaseService.users.updateOne(
+        {
+          _id: new ObjectId(userId)
+        },
+        {
+          $pull: {
+            addresses: new ObjectId(addressId)
+          },
+          $currentDate: {
+            updatedAt: true
+          }
+        }
+      )
+    ])
     return true
   }
 

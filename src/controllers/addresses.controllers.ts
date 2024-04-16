@@ -31,7 +31,8 @@ export const updateAddressController = async (
 }
 
 export const deleteAddressController = async (req: Request<AddressIdReqParams>, res: Response) => {
-  await addressService.delete(req.params.addressId)
+  const { userId } = req.decodedAuthorization as TokenPayload
+  await addressService.delete({ addressId: req.params.addressId, userId })
   return res.json({
     message: ADDRESS_MESSAGES.DELETE_ADDRESS_SUCCESS
   })
