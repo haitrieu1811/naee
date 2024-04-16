@@ -6,6 +6,7 @@ import {
   getAllAddresesController,
   getDistrictsController,
   getOneAddressController,
+  getProvincesController,
   updateAddressController
 } from '~/controllers/addresses.controllers'
 import { addressIdValidator, createAddressValidator } from '~/middlewares/addresses.middlewares'
@@ -60,6 +61,10 @@ addressesRouter.get(
   wrapRequestHandler(getAllAddresesController)
 )
 
+addressesRouter.get('/provinces', wrapRequestHandler(getProvincesController))
+
+addressesRouter.get('/provinces/:provinceId/districts', wrapRequestHandler(getDistrictsController))
+
 addressesRouter.get(
   '/:addressId',
   accessTokenValidator,
@@ -67,7 +72,5 @@ addressesRouter.get(
   addressIdValidator,
   wrapRequestHandler(getOneAddressController)
 )
-
-addressesRouter.get('/provinces/:provinceId/districts', wrapRequestHandler(getDistrictsController))
 
 export default addressesRouter

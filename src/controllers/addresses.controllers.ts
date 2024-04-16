@@ -68,3 +68,11 @@ export const getDistrictsController = async (req: Request<ProvinceIdReqParams>, 
     data: result
   })
 }
+
+export const getProvincesController = async (req: Request, res: Response) => {
+  const result = await addressService.getAllProvinces()
+  return res.json({
+    message: ADDRESS_MESSAGES.GET_ALL_PROVINCES_SUCCESS,
+    data: result
+  })
+}

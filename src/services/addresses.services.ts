@@ -366,6 +366,24 @@ class AddressService {
     }
   }
 
+  async getAllProvinces() {
+    const provinces = await databaseService.provinces
+      .find(
+        {},
+        {
+          projection: {
+            id: 0,
+            districts: 0
+          }
+        }
+      )
+      .toArray()
+    return {
+      provinces,
+      totalRows: provinces.length
+    }
+  }
+
   async getDistrictsByProvinceId(provinceId: string) {
     const districts = await databaseService.provinces
       .aggregate([
