@@ -416,6 +416,50 @@ class AddressService {
       totalRows: districts.length
     }
   }
+
+  async getWardsByProvinceAndDistrictId({ provinceId, districtId }: { provinceId: string; districtId: string }) {
+    const wards = await databaseService.provinces
+      .aggregate([
+        {
+          $match: {
+            _id: new ObjectId(provinceId)
+          }
+        },
+        {
+          $addFields: {
+            district: {
+              $filter: {
+                input: '$districts',
+                as: 'district',
+                cond: {
+                  $eq: ['$$district.id', districtId]
+                }
+              }
+            }
+          }
+        },
+        {
+          $unwind: {
+            path: '$district'
+          }
+        },
+        {
+          $unwind: {
+            path: '$district.wards'
+          }
+        },
+        {
+          $replaceRoot: {
+            newRoot: '$district.wards'
+          }
+        }
+      ])
+      .toArray()
+    return {
+      wards,
+      totalRows: wards.length
+    }
+  }
 }
 
 const addressService = new AddressService()

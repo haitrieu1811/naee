@@ -2,7 +2,12 @@ import { Request, Response } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
 
 import { ADDRESS_MESSAGES } from '~/constants/message'
-import { AddressIdReqParams, CreateAddressReqBody, ProvinceIdReqParams } from '~/models/requests/Address.requests'
+import {
+  AddressIdReqParams,
+  CreateAddressReqBody,
+  DistrictIdReqParams,
+  ProvinceIdReqParams
+} from '~/models/requests/Address.requests'
 import { PaginationReqQuery } from '~/models/requests/Common.requests'
 import { TokenPayload } from '~/models/requests/User.requests'
 import addressService from '~/services/addresses.services'
@@ -61,6 +66,14 @@ export const getOneAddressController = async (req: Request<AddressIdReqParams>, 
   })
 }
 
+export const getProvincesController = async (req: Request, res: Response) => {
+  const result = await addressService.getAllProvinces()
+  return res.json({
+    message: ADDRESS_MESSAGES.GET_ALL_PROVINCES_SUCCESS,
+    data: result
+  })
+}
+
 export const getDistrictsController = async (req: Request<ProvinceIdReqParams>, res: Response) => {
   const result = await addressService.getDistrictsByProvinceId(req.params.provinceId)
   return res.json({
@@ -69,10 +82,11 @@ export const getDistrictsController = async (req: Request<ProvinceIdReqParams>, 
   })
 }
 
-export const getProvincesController = async (req: Request, res: Response) => {
-  const result = await addressService.getAllProvinces()
+export const getWardsController = async (req: Request<ProvinceIdReqParams & DistrictIdReqParams>, res: Response) => {
+  const { provinceId, districtId } = req.params
+  const result = await addressService.getWardsByProvinceAndDistrictId({ provinceId, districtId })
   return res.json({
-    message: ADDRESS_MESSAGES.GET_ALL_PROVINCES_SUCCESS,
+    message: ADDRESS_MESSAGES.GET_WARDS_SUCCESS,
     data: result
   })
 }

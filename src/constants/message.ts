@@ -76,5 +76,6 @@ export const ADDRESS_MESSAGES = {
   GET_ALL_ADDRESSES_SUCCESS: 'Get all addresses successfully.',
   GET_ONE_ADDRESS_SUCCESS: 'Get address successfully.',
   GET_DISTRICTS_SUCCESS: 'Get the list of districts successfully.',
-  GET_ALL_PROVINCES_SUCCESS: 'Get a list of all successful provinces.'
+  GET_ALL_PROVINCES_SUCCESS: 'Get a list of all successful provinces.',
+  GET_WARDS_SUCCESS: 'Get the list of wards successfully.'
 }
