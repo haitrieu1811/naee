@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
 
 import { ADDRESS_MESSAGES } from '~/constants/message'
-import { AddressIdReqParams, CreateAddressReqBody } from '~/models/requests/Address.requests'
+import { AddressIdReqParams, CreateAddressReqBody, ProvinceIdReqParams } from '~/models/requests/Address.requests'
 import { PaginationReqQuery } from '~/models/requests/Common.requests'
 import { TokenPayload } from '~/models/requests/User.requests'
 import addressService from '~/services/addresses.services'
@@ -57,6 +57,14 @@ export const getOneAddressController = async (req: Request<AddressIdReqParams>, 
   const result = await addressService.getOne(req.params.addressId)
   return res.json({
     message: ADDRESS_MESSAGES.GET_ONE_ADDRESS_SUCCESS,
+    data: result
+  })
+}
+
+export const getDistrictsController = async (req: Request<ProvinceIdReqParams>, res: Response) => {
+  const result = await addressService.getDistrictsByProvinceId(req.params.provinceId)
+  return res.json({
+    message: ADDRESS_MESSAGES.GET_DISTRICTS_SUCCESS,
     data: result
   })
 }

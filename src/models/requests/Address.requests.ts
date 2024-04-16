@@ -16,3 +16,7 @@ export type CreateAddressReqBody = {
 export type AddressIdReqParams = ParamsDictionary & {
   addressId: string
 }
+
+export type ProvinceIdReqParams = ParamsDictionary & {
+  provinceId: string
+}

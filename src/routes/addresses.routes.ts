@@ -4,6 +4,7 @@ import {
   createAddressController,
   deleteAddressController,
   getAllAddresesController,
+  getDistrictsController,
   getOneAddressController,
   updateAddressController
 } from '~/controllers/addresses.controllers'
@@ -66,5 +67,7 @@ addressesRouter.get(
   addressIdValidator,
   wrapRequestHandler(getOneAddressController)
 )
+
+addressesRouter.get('/provinces/:provinceId/districts', wrapRequestHandler(getDistrictsController))
 
 export default addressesRouter

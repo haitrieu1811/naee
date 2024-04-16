@@ -365,6 +365,39 @@ class AddressService {
       address: addresses[0]
     }
   }
+
+  async getDistrictsByProvinceId(provinceId: string) {
+    const districts = await databaseService.provinces
+      .aggregate([
+        {
+          $match: {
+            _id: new ObjectId(provinceId)
+          }
+        },
+        {
+          $unwind: {
+            path: '$districts'
+          }
+        },
+        {
+          $replaceRoot: {
+            newRoot: '$districts'
+          }
+        },
+        {
+          $project: {
+            wards: 0,
+            streets: 0,
+            projects: 0
+          }
+        }
+      ])
+      .toArray()
+    return {
+      districts,
+      totalRows: districts.length
+    }
+  }
 }
 
 const addressService = new AddressService()

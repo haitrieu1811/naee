@@ -74,5 +74,6 @@ export const ADDRESS_MESSAGES = {
   PERMISSION_DENIED: 'Permission denied.',
   DELETE_ADDRESS_SUCCESS: 'Address deleted successfully.',
   GET_ALL_ADDRESSES_SUCCESS: 'Get all addresses successfully.',
-  GET_ONE_ADDRESS_SUCCESS: 'Get address successfully.'
+  GET_ONE_ADDRESS_SUCCESS: 'Get address successfully.',
+  GET_DISTRICTS_SUCCESS: 'Get the list of districts successfully.'
 }
