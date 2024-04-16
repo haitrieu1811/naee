@@ -53,6 +53,12 @@ class DatabaseService {
     await Promise.all([this.refreshTokens.createIndex({ token: 1 }, { expireAfterSeconds: 0 })])
   }
 
+  async indexAddresses() {
+    const isExists = await this.addresses.indexExists(['userId_1'])
+    if (isExists) return
+    await Promise.all([this.addresses.createIndex({ userId: 1 })])
+  }
+
   get users(): Collection<User> {
     return this.db.collection(ENV_CONFIG.DB_USERS_COLLECTION_NAME)
   }

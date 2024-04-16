@@ -25,7 +25,7 @@ export default class Address {
   provinceId: ObjectId
   districtId: string
   wardId: string
-  streetId: string
+  streetId: string | null
   isDefault: boolean
   createdAt: Date
   updatedAt: Date
@@ -53,7 +53,7 @@ export default class Address {
     this.provinceId = provinceId
     this.districtId = districtId
     this.wardId = wardId
-    this.streetId = streetId || ''
+    this.streetId = streetId || null
     this.isDefault = isDefault || false
     this.createdAt = createdAt || date
     this.updatedAt = updatedAt || date

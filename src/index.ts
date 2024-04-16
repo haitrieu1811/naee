@@ -11,6 +11,7 @@ import { initFolders } from '~/utils/file'
 databaseService.connect().then(() => {
   databaseService.indexUsers()
   databaseService.indexRefreshTokens()
+  databaseService.indexAddresses()
 })
 
 initFolders()
