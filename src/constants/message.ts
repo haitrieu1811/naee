@@ -1,5 +1,7 @@
 export const GENERAL_MESSAGES = {
-  VALIDATION_ERROR: 'Validation error.'
+  VALIDATION_ERROR: 'Validation error.',
+  PAGE_MUST_BE_A_INTEGER_AND_POSITIVE: 'Page must be a positive integer.',
+  LIMIT_MUST_BE_A_INTEGER_AND_POSITIVE: 'Limit must be a positive integer.'
 } as const
 
 export const USER_MESSAGES = {
@@ -70,5 +72,6 @@ export const ADDRESS_MESSAGES = {
   ADDRESS_ID_IS_INVALID: 'Invalid address id.',
   ADDRESS_NOT_FOUND: 'Address not found.',
   PERMISSION_DENIED: 'Permission denied.',
-  DELETE_ADDRESS_SUCCESS: 'Address deleted successfully.'
+  DELETE_ADDRESS_SUCCESS: 'Address deleted successfully.',
+  GET_ALL_ADDRESSES_SUCCESS: 'Get all addresses successfully.'
 }

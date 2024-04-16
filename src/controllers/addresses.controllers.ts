@@ -3,6 +3,7 @@ import { ParamsDictionary } from 'express-serve-static-core'
 
 import { ADDRESS_MESSAGES } from '~/constants/message'
 import { AddressIdReqParams, CreateAddressReqBody } from '~/models/requests/Address.requests'
+import { PaginationReqQuery } from '~/models/requests/Common.requests'
 import { TokenPayload } from '~/models/requests/User.requests'
 import addressService from '~/services/addresses.services'
 
@@ -33,5 +34,20 @@ export const deleteAddressController = async (req: Request<AddressIdReqParams>, 
   await addressService.delete(req.params.addressId)
   return res.json({
     message: ADDRESS_MESSAGES.DELETE_ADDRESS_SUCCESS
+  })
+}
+
+export const getAllAddresesController = async (
+  req: Request<ParamsDictionary, any, any, PaginationReqQuery>,
+  res: Response
+) => {
+  const { userId } = req.decodedAuthorization as TokenPayload
+  const { addresses, ...pagination } = await addressService.getAll({ query: req.query, userId })
+  return res.json({
+    message: ADDRESS_MESSAGES.GET_ALL_ADDRESSES_SUCCESS,
+    data: {
+      addresses,
+      pagination
+    }
   })
 }

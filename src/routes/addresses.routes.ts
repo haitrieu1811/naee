@@ -3,10 +3,11 @@ import { Router } from 'express'
 import {
   createAddressController,
   deleteAddressController,
+  getAllAddresesController,
   updateAddressController
 } from '~/controllers/addresses.controllers'
 import { addressIdValidator, createAddressValidator } from '~/middlewares/addresses.middlewares'
-import { filterReqBodyMiddleware } from '~/middlewares/common.middlewares'
+import { filterReqBodyMiddleware, paginationValidator } from '~/middlewares/common.middlewares'
 import { accessTokenValidator, verifiedUserValidator } from '~/middlewares/users.middlewares'
 import { CreateAddressReqBody } from '~/models/requests/Address.requests'
 import { wrapRequestHandler } from '~/utils/handler'
@@ -47,6 +48,14 @@ addressesRouter.delete(
   verifiedUserValidator,
   addressIdValidator,
   wrapRequestHandler(deleteAddressController)
+)
+
+addressesRouter.get(
+  '/all',
+  accessTokenValidator,
+  verifiedUserValidator,
+  paginationValidator,
+  wrapRequestHandler(getAllAddresesController)
 )
 
 export default addressesRouter
