@@ -3,7 +3,12 @@ import { ParamsDictionary } from 'express-serve-static-core'
 
 import { PRODUCT_MESSAGES } from '~/constants/message'
 import { PaginationReqQuery } from '~/models/requests/Common.requests'
-import { CreateProductCategoryReqBody, ProductCategoryIdReqParams } from '~/models/requests/Product.requests'
+import {
+  BrandIdReqParams,
+  CreateBrandReqBody,
+  CreateProductCategoryReqBody,
+  ProductCategoryIdReqParams
+} from '~/models/requests/Product.requests'
 import { TokenPayload } from '~/models/requests/User.requests'
 import productService from '~/services/product.services'
 
@@ -46,6 +51,44 @@ export const getAllCategoriesController = async (
     message: PRODUCT_MESSAGES.GET_ALL_CATEGORIES_SUCCESS,
     data: {
       productCategories,
+      pagination
+    }
+  })
+}
+
+export const createBrandController = async (req: Request<ParamsDictionary, any, CreateBrandReqBody>, res: Response) => {
+  const { userId } = req.decodedAuthorization as TokenPayload
+  const result = await productService.createBrand({ dto: req.body, userId })
+  return res.json({
+    message: PRODUCT_MESSAGES.CREATE_BRAND_SUCCESS,
+    data: result
+  })
+}
+
+export const updateBrandController = async (req: Request<BrandIdReqParams, any, CreateBrandReqBody>, res: Response) => {
+  const result = await productService.updateBrand({ dto: req.body, brandId: req.params.brandId })
+  return res.json({
+    message: PRODUCT_MESSAGES.UPDATE_BRAND_SUCCESS,
+    data: result
+  })
+}
+
+export const deleteBrandController = async (req: Request<BrandIdReqParams>, res: Response) => {
+  await productService.deleteBrand(req.params.brandId)
+  return res.json({
+    message: PRODUCT_MESSAGES.DELETE_BRAND_SUCCESS
+  })
+}
+
+export const getAllBrandsController = async (
+  req: Request<ParamsDictionary, any, any, PaginationReqQuery>,
+  res: Response
+) => {
+  const { brands, ...pagination } = await productService.getAllBrands(req.query)
+  return res.json({
+    message: PRODUCT_MESSAGES.GET_ALL_BRANDS_SUCCESS,
+    data: {
+      brands,
       pagination
     }
   })

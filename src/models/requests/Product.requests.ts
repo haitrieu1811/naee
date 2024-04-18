@@ -7,3 +7,12 @@ export type CreateProductCategoryReqBody = {
 export type ProductCategoryIdReqParams = ParamsDictionary & {
   productCategoryId: string
 }
+
+export type CreateBrandReqBody = {
+  name: string
+  nation: string
+}
+
+export type BrandIdReqParams = ParamsDictionary & {
+  brandId: string
+}

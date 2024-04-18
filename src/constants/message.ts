@@ -90,5 +90,14 @@ export const PRODUCT_MESSAGES = {
   PRODUCT_CATEGORY_ID_IS_REQUIRED: 'Product category id is required.',
   PRODUCT_CATEGORY_ID_IS_INVALID: 'Invalid product category id.',
   PRODUCT_CATEGORY_NOT_FOUND: 'Product category not found.',
-  GET_ALL_CATEGORIES_SUCCESS: 'Get the list of all categories successfully.'
+  GET_ALL_CATEGORIES_SUCCESS: 'Get the list of all categories successfully.',
+  CREATE_BRAND_SUCCESS: 'Create a successful brand.',
+  UPDATE_BRAND_SUCCESS: 'Brand update successful.',
+  DELETE_BRAND_SUCCESS: 'Delete update successful.',
+  GET_ALL_BRANDS_SUCCESS: 'Get a list of all successful brands.',
+  BRAND_ID_IS_REQUIRED: 'Brand id is required.',
+  BRAND_ID_IS_INVALID: 'Invalid brand id.',
+  BRAND_NOT_FOUND: 'Brand not found.',
+  BRAND_NAME_IS_REQUIRED: 'Brand name is required.',
+  BRAND_NATION_IS_REQUIRED: 'Brand nation is required.'
 } as const
