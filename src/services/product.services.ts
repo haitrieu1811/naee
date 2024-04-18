@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb'
-import { ProductDiscountType } from '~/constants/enum'
 
+import { ENV_CONFIG } from '~/constants/config'
+import { ProductDiscountType } from '~/constants/enum'
 import { PaginationReqQuery } from '~/models/requests/Common.requests'
 import {
   CreateBrandReqBody,
@@ -247,14 +248,14 @@ class ProductService {
           {
             $addFields: {
               thumbnail: {
-                $concat: ['https://naee-ap-southeast-1.s3.ap-southeast-1.amazonaws.com/images/', '$thumbnail.name']
+                $concat: [ENV_CONFIG.HOST, '/', ENV_CONFIG.STATIC_IMAGES_PATH, '/', '$thumbnail.name']
               },
               photos: {
                 $map: {
                   input: '$photos',
                   as: 'photo',
                   in: {
-                    $concat: ['https://naee-ap-southeast-1.s3.ap-southeast-1.amazonaws.com/images/', '$$photo.name']
+                    $concat: [ENV_CONFIG.HOST, '/', ENV_CONFIG.STATIC_IMAGES_PATH, '/', '$$photo.name']
                   }
                 }
               },

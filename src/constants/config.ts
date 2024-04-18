@@ -26,8 +26,10 @@ export const isProduction = env === 'production'
 
 export const ENV_CONFIG = {
   PORT: process.env.PORT as string,
+  HOST: process.env.HOST as string,
   CLIENT_URL: process.env.CLIENT_URL as string,
   PASSWORD_SECRET: process.env.PASSWORD_SECRET as string,
+  STATIC_IMAGES_PATH: process.env.STATIC_IMAGES_PATH as string,
 
   DB_USERNAME: process.env.DB_USERNAME as string,
   DB_PASSWORD: process.env.DB_PASSWORD as string,

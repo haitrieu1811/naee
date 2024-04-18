@@ -5,6 +5,7 @@ import { defaultErrorHandler } from '~/middlewares/error.middlewares'
 import addressesRouter from '~/routes/addresses.routes'
 import filesRouter from '~/routes/files.routes'
 import productsRouter from '~/routes/products.routes'
+import staticRouter from '~/routes/static.routes'
 import usersRouter from '~/routes/users.routes'
 import databaseService from '~/services/database.services'
 import { initFolders } from '~/utils/file'
@@ -25,6 +26,7 @@ app.use('/users', usersRouter)
 app.use('/files', filesRouter)
 app.use('/addresses', addressesRouter)
 app.use('/products', productsRouter)
+app.use('/static', staticRouter)
 app.use(defaultErrorHandler)
 
 app.listen(port, () => {
