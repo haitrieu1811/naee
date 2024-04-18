@@ -74,7 +74,6 @@ export enum UserStatus {
 
 export enum UserRole {
   Admin,
-  Manager,
   User
 }
 

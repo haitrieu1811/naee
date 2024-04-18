@@ -3,6 +3,7 @@ import { Collection, Db, MongoClient } from 'mongodb'
 import { ENV_CONFIG } from '~/constants/config'
 import Address from '~/models/schemas/Address.schema'
 import File from '~/models/schemas/File.schema'
+import ProductCategory from '~/models/schemas/ProductCategory.schema'
 import { Province } from '~/models/schemas/Province.schema'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import User from '~/models/schemas/User.schema'
@@ -77,6 +78,10 @@ class DatabaseService {
 
   get provinces(): Collection<Province> {
     return this.db.collection(ENV_CONFIG.DB_PROVINCES_COLLECTION_NAME)
+  }
+
+  get productCategories(): Collection<ProductCategory> {
+    return this.db.collection(ENV_CONFIG.DB_PRODUCT_CATEGORIES_COLLECTION_NAME)
   }
 }
 

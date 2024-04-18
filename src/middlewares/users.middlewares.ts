@@ -5,7 +5,7 @@ import capitalize from 'lodash/capitalize'
 import { ObjectId } from 'mongodb'
 
 import { ENV_CONFIG } from '~/constants/config'
-import { HttpStatusCode, UserStatus, UserVerifyStatus } from '~/constants/enum'
+import { HttpStatusCode, UserRole, UserStatus, UserVerifyStatus } from '~/constants/enum'
 import { USER_MESSAGES } from '~/constants/message'
 import { VIET_NAM_PHONE_NUMBER_REGEX } from '~/constants/regex'
 import { ErrorWithStatus } from '~/models/Errors'
@@ -143,6 +143,19 @@ export const verifiedUserValidator = (req: Request, _: Response, next: NextFunct
     next(
       new ErrorWithStatus({
         message: USER_MESSAGES.USER_IS_UNVERIFIED,
+        status: HttpStatusCode.Forbidden
+      })
+    )
+  }
+  next()
+}
+
+export const isAdminValidator = (req: Request, _: Response, next: NextFunction) => {
+  const { role } = req.decodedAuthorization as TokenPayload
+  if (role !== UserRole.Admin) {
+    next(
+      new ErrorWithStatus({
+        message: USER_MESSAGES.PERMISSION_DENIED,
         status: HttpStatusCode.Forbidden
       })
     )

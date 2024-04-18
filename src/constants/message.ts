@@ -41,14 +41,15 @@ export const USER_MESSAGES = {
   PHONE_NUMBER_IS_INVALID: 'Invalid phone number.',
   PHONE_NUMBER_ALREADY_EXISTS: 'Phone number already exists.',
   AVATAR_IS_INVALID: 'Invalid avatar.',
-  USER_IS_UNVERIFIED: 'Your account has not been verified.'
+  USER_IS_UNVERIFIED: 'Your account has not been verified.',
+  PERMISSION_DENIED: 'Permission denied.'
 } as const
 
 export const FILE_MESSAGES = {
   IMAGE_FILE_TYPE_INVALID: 'Invalid image file type.',
   IMAGE_FIELD_IS_REQUIRED: 'Image field is required.',
   UPLOAD_IMAGE_SUCCESS: 'Image uploaded successfully.'
-}
+} as const
 
 export const ADDRESS_MESSAGES = {
   CREATE_ADDRESS_SUCCESS: 'Address created successfully.',
@@ -79,4 +80,15 @@ export const ADDRESS_MESSAGES = {
   GET_ALL_PROVINCES_SUCCESS: 'Get a list of all successful provinces.',
   GET_WARDS_SUCCESS: 'Get the list of wards successfully.',
   GET_STREETS_SUCCESS: 'Get the list of streets successfully.'
-}
+} as const
+
+export const PRODUCT_MESSAGES = {
+  CREATE_PRODUCT_CATEGORY_SUCCESS: 'Create a successful product catalog.',
+  UPDATE_PRODUCT_CATEGORY_SUCCESS: 'Updated product catalog successfully.',
+  DELETE_PRODUCT_CATEGORY_SUCCESS: 'Product category deleted successfully.',
+  PRODUCT_CATEGORY_NAME_IS_REQUIRED: 'Product category name is required.',
+  PRODUCT_CATEGORY_ID_IS_REQUIRED: 'Product category id is required.',
+  PRODUCT_CATEGORY_ID_IS_INVALID: 'Invalid product category id.',
+  PRODUCT_CATEGORY_NOT_FOUND: 'Product category not found.',
+  GET_ALL_CATEGORIES_SUCCESS: 'Get the list of all categories successfully.'
+} as const

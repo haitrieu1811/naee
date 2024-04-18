@@ -4,6 +4,7 @@ import { ENV_CONFIG } from '~/constants/config'
 import { defaultErrorHandler } from '~/middlewares/error.middlewares'
 import addressesRouter from '~/routes/addresses.routes'
 import filesRouter from '~/routes/files.routes'
+import productsRouter from '~/routes/products.routes'
 import usersRouter from '~/routes/users.routes'
 import databaseService from '~/services/database.services'
 import { initFolders } from '~/utils/file'
@@ -23,6 +24,7 @@ app.use(express.json())
 app.use('/users', usersRouter)
 app.use('/files', filesRouter)
 app.use('/addresses', addressesRouter)
+app.use('/products', productsRouter)
 app.use(defaultErrorHandler)
 
 app.listen(port, () => {
