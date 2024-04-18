@@ -1,8 +1,13 @@
 import { ObjectId } from 'mongodb'
 
 import { PaginationReqQuery } from '~/models/requests/Common.requests'
-import { CreateBrandReqBody, CreateProductCategoryReqBody } from '~/models/requests/Product.requests'
+import {
+  CreateBrandReqBody,
+  CreateProductCategoryReqBody,
+  CreateProductReqBody
+} from '~/models/requests/Product.requests'
 import Brand from '~/models/schemas/Brand.schema'
+import Product from '~/models/schemas/Product.schema'
 import ProductCategory from '~/models/schemas/ProductCategory.schema'
 import databaseService from '~/services/database.services'
 import { paginationConfig } from '~/utils/utils'
@@ -122,6 +127,22 @@ class ProductService {
       limit,
       totalRows,
       totalPages: Math.ceil(totalRows / limit)
+    }
+  }
+
+  async createProduct({ dto, userId }: { dto: CreateProductReqBody; userId: string }) {
+    const dtoConfig = {
+      ...dto,
+      productCategoryId: new ObjectId(dto.productCategoryId),
+      brandId: new ObjectId(dto.brandId),
+      thumbnail: new ObjectId(dto.thumbnail),
+      userId: new ObjectId(userId),
+      photos: dto.photos?.map((photo) => new ObjectId(photo))
+    }
+    const { insertedId } = await databaseService.products.insertOne(new Product(dtoConfig))
+    const insertedProduct = await databaseService.products.findOne({ _id: insertedId })
+    return {
+      product: insertedProduct
     }
   }
 }

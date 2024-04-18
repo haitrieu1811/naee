@@ -7,6 +7,7 @@ import {
   BrandIdReqParams,
   CreateBrandReqBody,
   CreateProductCategoryReqBody,
+  CreateProductReqBody,
   ProductCategoryIdReqParams
 } from '~/models/requests/Product.requests'
 import { TokenPayload } from '~/models/requests/User.requests'
@@ -91,5 +92,17 @@ export const getAllBrandsController = async (
       brands,
       pagination
     }
+  })
+}
+
+export const createProductController = async (
+  req: Request<ParamsDictionary, any, CreateProductReqBody>,
+  res: Response
+) => {
+  const { userId } = req.decodedAuthorization as TokenPayload
+  const result = await productService.createProduct({ dto: req.body, userId })
+  return res.json({
+    message: PRODUCT_MESSAGES.CREATE_PRODUCT_SUCCESS,
+    data: result
   })
 }

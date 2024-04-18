@@ -99,5 +99,22 @@ export const PRODUCT_MESSAGES = {
   BRAND_ID_IS_INVALID: 'Invalid brand id.',
   BRAND_NOT_FOUND: 'Brand not found.',
   BRAND_NAME_IS_REQUIRED: 'Brand name is required.',
-  BRAND_NATION_IS_REQUIRED: 'Brand nation is required.'
+  BRAND_NATION_IS_REQUIRED: 'Brand nation is required.',
+  CREATE_PRODUCT_SUCCESS: 'Create a successful product.',
+  PRODUCT_THUMBNAIL_IS_REQUIRED: 'Product thumbnail is required.',
+  PRODUCT_DESCRIPTION_IS_REQUIRED: 'Product description is required.',
+  PRODUCT_THUMBNAIL_IS_INVALID: 'Invalid product thumbnail.',
+  PRODUCT_NAME_IS_REQUIRED: 'Product name is required.',
+  PRODUCT_PHOTOS_MUST_BE_AN_ARRAY: 'Product photos must be an array.',
+  PRODUCT_PHOTOS_MUST_BE_AN_ARRAY_OBJECTID: 'Photos must be an array of objectIds.',
+  PRODUCT_AVAILABEL_COUNT_IS_REQUIRED: 'Product available count is required.',
+  PRODUCT_AVAILABEL_COUNT_MUST_BE_AN_INT: 'Product available count must be an integer.',
+  PRODUCT_AVAILABEL_COUNT_MUST_BE_GREATER_THAN_ZERO: 'Product available count must be greater than zero.',
+  PRODUCT_PRICE_IS_REQUIRED: 'Product price is required.',
+  PRODUCT_PRICE_MUST_BE_AN_INT: 'Product price must be an integer.',
+  PRODUCT_PRICE_MUST_BE_GREATER_THAN_ZERO: 'Product price must be greater than zero.',
+  PRODUCT_DISCOUNT_TYPE_IS_INVALID: 'Invalid product discount type.',
+  PRODUCT_DISCOUNT_VALUE_MUST_BE_AN_INT: 'Product discount value must be an integer.',
+  PRODUCT_DISCOUNT_VALUE_MUST_BE_GREATER_THAN_OR_EQUAL_ZERO:
+    'Product discount value must be greater than or equal zero.'
 } as const

@@ -3,6 +3,7 @@ import { Router } from 'express'
 import {
   createBrandController,
   createCategoryController,
+  createProductController,
   deleteBrandController,
   deleteCategoryController,
   getAllBrandsController,
@@ -15,10 +16,15 @@ import {
   brandIdValidator,
   createBrandValidator,
   createProductCategoryValidator,
+  createProductValidator,
   productCategoryIdValidator
 } from '~/middlewares/products.middlewares'
 import { accessTokenValidator, isAdminValidator } from '~/middlewares/users.middlewares'
-import { CreateProductCategoryReqBody } from '~/models/requests/Product.requests'
+import {
+  CreateBrandReqBody,
+  CreateProductCategoryReqBody,
+  CreateProductReqBody
+} from '~/models/requests/Product.requests'
 import { wrapRequestHandler } from '~/utils/handler'
 
 const productsRouter = Router()
@@ -65,6 +71,7 @@ productsRouter.put(
   isAdminValidator,
   brandIdValidator,
   createBrandValidator,
+  filterReqBodyMiddleware<CreateBrandReqBody>(['name', 'nation']),
   wrapRequestHandler(updateBrandController)
 )
 
@@ -77,5 +84,25 @@ productsRouter.delete(
 )
 
 productsRouter.get('/brands/all', paginationValidator, wrapRequestHandler(getAllBrandsController))
+
+productsRouter.post(
+  '/',
+  accessTokenValidator,
+  isAdminValidator,
+  createProductValidator,
+  filterReqBodyMiddleware<CreateProductReqBody>([
+    'availableCount',
+    'brandId',
+    'description',
+    'discountType',
+    'discountValue',
+    'name',
+    'photos',
+    'price',
+    'productCategoryId',
+    'thumbnail'
+  ]),
+  wrapRequestHandler(createProductController)
+)
 
 export default productsRouter

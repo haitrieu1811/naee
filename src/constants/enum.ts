@@ -98,3 +98,13 @@ export enum AddressType {
   Home,
   Office
 }
+
+export enum ProductStatus {
+  Active,
+  Inactive
+}
+
+export enum ProductDiscountType {
+  Money,
+  Percent
+}
