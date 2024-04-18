@@ -108,3 +108,8 @@ export enum ProductDiscountType {
   Money,
   Percent
 }
+
+export enum CartItemStatus {
+  InCart,
+  NotInCart
+}

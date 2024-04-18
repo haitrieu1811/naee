@@ -127,3 +127,10 @@ export const PRODUCT_MESSAGES = {
     'Product discount value can not be greater than original price.',
   PRODUCT_DISCOUNT_VALUE_CAN_NOT_BE_GREATER_THAN_100: 'Product discount value can not be greater than 100.'
 } as const
+
+export const CART_MESSAGES = {
+  ADD_TO_CART_SUCCESS: 'Added product to cart successfully.',
+  QUANTITY_IS_REQUIRED: 'Quantity is required.',
+  QUANTITY_MUST_BE_AN_INT: 'Quantity must be an integer.',
+  QUANTITY_MUST_BE_GREATER_THAN_ZERO: 'Quantity must be greater than zero.'
+} as const

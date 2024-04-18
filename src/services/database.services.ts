@@ -3,6 +3,7 @@ import { Collection, Db, MongoClient } from 'mongodb'
 import { ENV_CONFIG } from '~/constants/config'
 import Address from '~/models/schemas/Address.schema'
 import Brand from '~/models/schemas/Brand.schema'
+import CartItem from '~/models/schemas/CartItem.schema'
 import File from '~/models/schemas/File.schema'
 import Product from '~/models/schemas/Product.schema'
 import ProductCategory from '~/models/schemas/ProductCategory.schema'
@@ -92,6 +93,10 @@ class DatabaseService {
 
   get products(): Collection<Product> {
     return this.db.collection(ENV_CONFIG.DB_PRODUCTS_COLLECTION_NAME)
+  }
+
+  get cartItems(): Collection<CartItem> {
+    return this.db.collection(ENV_CONFIG.DB_CART_ITEMS_COLLECTION_NAME)
   }
 }
 
