@@ -28,6 +28,9 @@ class CartItemService {
         {
           $inc: {
             quantity
+          },
+          $currentDate: {
+            updatedAt: true
           }
         },
         {
@@ -38,6 +41,26 @@ class CartItemService {
     }
     return {
       cartItem
+    }
+  }
+
+  async updateCartItemQuantity({ cartItemId, quantity }: { cartItemId: string; quantity: number }) {
+    const updatedCartItem = await databaseService.cartItems.findOneAndUpdate(
+      { _id: new ObjectId(cartItemId) },
+      {
+        $set: {
+          quantity
+        },
+        $currentDate: {
+          updatedAt: true
+        }
+      },
+      {
+        returnDocument: 'after'
+      }
+    )
+    return {
+      cartItem: updatedCartItem
     }
   }
 }

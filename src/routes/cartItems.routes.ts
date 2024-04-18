@@ -1,7 +1,11 @@
 import { Router } from 'express'
 
-import { addToCartController } from '~/controllers/cartItems.controllers'
-import { addToCartValidator } from '~/middlewares/cartItems.middlewares'
+import { addToCartController, updateCartItemQuantityController } from '~/controllers/cartItems.controllers'
+import {
+  addToCartValidator,
+  cartItemIdValidator,
+  updateCartItemQuantityValidator
+} from '~/middlewares/cartItems.middlewares'
 import { productIdValidator } from '~/middlewares/products.middlewares'
 import { accessTokenValidator, verifiedUserValidator } from '~/middlewares/users.middlewares'
 import { wrapRequestHandler } from '~/utils/handler'
@@ -15,6 +19,15 @@ cartItemsRouter.post(
   productIdValidator,
   addToCartValidator,
   wrapRequestHandler(addToCartController)
+)
+
+cartItemsRouter.patch(
+  '/:cartItemId/quantity',
+  accessTokenValidator,
+  verifiedUserValidator,
+  cartItemIdValidator,
+  updateCartItemQuantityValidator,
+  wrapRequestHandler(updateCartItemQuantityController)
 )
 
 export default cartItemsRouter

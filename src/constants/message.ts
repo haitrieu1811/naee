@@ -132,5 +132,9 @@ export const CART_MESSAGES = {
   ADD_TO_CART_SUCCESS: 'Added product to cart successfully.',
   QUANTITY_IS_REQUIRED: 'Quantity is required.',
   QUANTITY_MUST_BE_AN_INT: 'Quantity must be an integer.',
-  QUANTITY_MUST_BE_GREATER_THAN_ZERO: 'Quantity must be greater than zero.'
+  QUANTITY_MUST_BE_GREATER_THAN_ZERO: 'Quantity must be greater than zero.',
+  UPDATE_QUANTITY_SUCCESS: 'Updated quantity successfully.',
+  CART_ITEM_ID_IS_REQUIRED: 'Cart item id is required.',
+  CART_ITEM_ID_IS_INVALID: 'Invalid cart item id.',
+  CART_ITEM_NOT_FOUND: 'Cart item not found.'
 } as const
