@@ -222,12 +222,28 @@ export const createProductValidator = validate(
       discountValue: {
         optional: true,
         custom: {
-          options: (value) => {
+          options: (value, { req }) => {
             if (!Number.isInteger(value)) {
               throw new Error(PRODUCT_MESSAGES.PRODUCT_DISCOUNT_VALUE_MUST_BE_AN_INT)
             }
             if (value < 0) {
               throw new Error(PRODUCT_MESSAGES.PRODUCT_DISCOUNT_VALUE_MUST_BE_GREATER_THAN_OR_EQUAL_ZERO)
+            }
+            const discountType = req.body.discountType || ProductDiscountType.Money
+            const price = req.body.price
+            switch (discountType) {
+              case ProductDiscountType.Money:
+                if (value > price) {
+                  throw new Error(PRODUCT_MESSAGES.PRODUCT_DISCOUNT_VALUE_CAN_NOT_BE_GREATER_THAN_ORIGINAL_PRICE)
+                }
+                break
+              case ProductDiscountType.Percent:
+                if (value > 100) {
+                  throw new Error(PRODUCT_MESSAGES.PRODUCT_DISCOUNT_VALUE_CAN_NOT_BE_GREATER_THAN_100)
+                }
+                break
+              default:
+                break
             }
             return true
           }

@@ -122,5 +122,8 @@ export const PRODUCT_MESSAGES = {
   PRODUCT_ID_IS_INVALID: 'Invalid product id.',
   PRODUCT_NOT_FOUND: 'Product not found.',
   DELETE_PRODUCT_SUCCESS: 'Product deletion successful.',
-  GET_PRODUCTS_SUCCESS: 'Get the product list successfully.'
+  GET_PRODUCTS_SUCCESS: 'Get the product list successfully.',
+  PRODUCT_DISCOUNT_VALUE_CAN_NOT_BE_GREATER_THAN_ORIGINAL_PRICE:
+    'Product discount value can not be greater than original price.',
+  PRODUCT_DISCOUNT_VALUE_CAN_NOT_BE_GREATER_THAN_100: 'Product discount value can not be greater than 100.'
 } as const
