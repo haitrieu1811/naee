@@ -1,8 +1,13 @@
 import { Router } from 'express'
 
-import { addToCartController, updateCartItemQuantityController } from '~/controllers/cartItems.controllers'
+import {
+  addToCartController,
+  deleteCartItemsController,
+  updateCartItemQuantityController
+} from '~/controllers/cartItems.controllers'
 import {
   addToCartValidator,
+  cartItemIdOptionalValidator,
   cartItemIdValidator,
   updateCartItemQuantityValidator
 } from '~/middlewares/cartItems.middlewares'
@@ -28,6 +33,14 @@ cartItemsRouter.patch(
   cartItemIdValidator,
   updateCartItemQuantityValidator,
   wrapRequestHandler(updateCartItemQuantityController)
+)
+
+cartItemsRouter.delete(
+  '/:cartItemId?',
+  accessTokenValidator,
+  verifiedUserValidator,
+  cartItemIdOptionalValidator,
+  wrapRequestHandler(deleteCartItemsController)
 )
 
 export default cartItemsRouter

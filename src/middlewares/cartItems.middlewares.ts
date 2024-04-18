@@ -85,3 +85,33 @@ export const cartItemIdValidator = validate(
     ['params']
   )
 )
+
+export const cartItemIdOptionalValidator = validate(
+  checkSchema(
+    {
+      cartItemId: {
+        trim: true,
+        optional: true,
+        custom: {
+          options: async (value: string) => {
+            if (!ObjectId.isValid(value)) {
+              throw new ErrorWithStatus({
+                message: CART_MESSAGES.CART_ITEM_ID_IS_INVALID,
+                status: HttpStatusCode.BadRequest
+              })
+            }
+            const cartItem = await databaseService.cartItems.findOne({ _id: new ObjectId(value) })
+            if (!cartItem) {
+              throw new ErrorWithStatus({
+                message: CART_MESSAGES.CART_ITEM_NOT_FOUND,
+                status: HttpStatusCode.NotFound
+              })
+            }
+            return true
+          }
+        }
+      }
+    },
+    ['params']
+  )
+)

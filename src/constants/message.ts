@@ -136,5 +136,7 @@ export const CART_MESSAGES = {
   UPDATE_QUANTITY_SUCCESS: 'Updated quantity successfully.',
   CART_ITEM_ID_IS_REQUIRED: 'Cart item id is required.',
   CART_ITEM_ID_IS_INVALID: 'Invalid cart item id.',
-  CART_ITEM_NOT_FOUND: 'Cart item not found.'
+  CART_ITEM_NOT_FOUND: 'Cart item not found.',
+  DELETE_CART_ITEM_SUCCESS: 'Deleted cart item successfully.',
+  DELETE_ALL_CART_SUCCESS: 'Successfully deleted all products in the cart.'
 } as const

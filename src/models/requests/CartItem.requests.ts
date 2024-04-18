@@ -8,6 +8,10 @@ export type CartItemIdReqParams = ParamsDictionary & {
   cartItemId: string
 }
 
+export type CartItemIdOptionalReqParams = ParamsDictionary & {
+  cartItemId?: string
+}
+
 export type UpdateCartItemQuantityReqBody = {
   quantity: number
 }

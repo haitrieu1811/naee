@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb'
 
+import { CART_MESSAGES } from '~/constants/message'
 import CartItem from '~/models/schemas/CartItem.schema'
 import databaseService from '~/services/database.services'
 
@@ -61,6 +62,24 @@ class CartItemService {
     )
     return {
       cartItem: updatedCartItem
+    }
+  }
+
+  async deleteCartItems({ cartItemId, userId }: { cartItemId?: string; userId: string }) {
+    let message: string = CART_MESSAGES.DELETE_CART_ITEM_SUCCESS
+    if (cartItemId) {
+      await databaseService.cartItems.deleteOne({
+        _id: new ObjectId(cartItemId),
+        userId: new ObjectId(userId)
+      })
+    } else {
+      await databaseService.cartItems.deleteMany({
+        userId: new ObjectId(userId)
+      })
+      message = CART_MESSAGES.DELETE_ALL_CART_SUCCESS
+    }
+    return {
+      message
     }
   }
 }
