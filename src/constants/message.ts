@@ -120,5 +120,6 @@ export const PRODUCT_MESSAGES = {
   UPDATE_PRODUCT_SUCCESS: 'Product update successful.',
   PRODUCT_ID_IS_REQUIRED: 'Product id is required.',
   PRODUCT_ID_IS_INVALID: 'Invalid product id.',
-  PRODUCT_NOT_FOUND: 'Product not found.'
+  PRODUCT_NOT_FOUND: 'Product not found.',
+  DELETE_PRODUCT_SUCCESS: 'Product deletion successful.'
 } as const

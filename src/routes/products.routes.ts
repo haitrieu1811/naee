@@ -6,6 +6,7 @@ import {
   createProductController,
   deleteBrandController,
   deleteCategoryController,
+  deleteProductController,
   getAllBrandsController,
   getAllCategoriesController,
   updateBrandController,
@@ -126,6 +127,14 @@ productsRouter.put(
     'thumbnail'
   ]),
   wrapRequestHandler(updateProductController)
+)
+
+productsRouter.delete(
+  '/:productId',
+  accessTokenValidator,
+  isAdminValidator,
+  productIdValidator,
+  wrapRequestHandler(deleteProductController)
 )
 
 export default productsRouter

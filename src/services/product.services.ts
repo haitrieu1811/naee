@@ -172,6 +172,11 @@ class ProductService {
       product: updatedProduct
     }
   }
+
+  async deleteProduct(productId: string) {
+    await databaseService.products.deleteOne({ _id: new ObjectId(productId) })
+    return true
+  }
 }
 
 const productService = new ProductService()
