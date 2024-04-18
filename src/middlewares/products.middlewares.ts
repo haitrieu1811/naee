@@ -237,3 +237,38 @@ export const createProductValidator = validate(
     ['body']
   )
 )
+
+export const productIdValidator = validate(
+  checkSchema(
+    {
+      productId: {
+        trim: true,
+        custom: {
+          options: async (value: string) => {
+            if (!value) {
+              throw new ErrorWithStatus({
+                message: PRODUCT_MESSAGES.PRODUCT_ID_IS_REQUIRED,
+                status: HttpStatusCode.BadRequest
+              })
+            }
+            if (!ObjectId.isValid(value)) {
+              throw new ErrorWithStatus({
+                message: PRODUCT_MESSAGES.PRODUCT_ID_IS_INVALID,
+                status: HttpStatusCode.BadRequest
+              })
+            }
+            const product = await databaseService.products.findOne({ _id: new ObjectId(value) })
+            if (!product) {
+              throw new ErrorWithStatus({
+                message: PRODUCT_MESSAGES.PRODUCT_NOT_FOUND,
+                status: HttpStatusCode.NotFound
+              })
+            }
+            return true
+          }
+        }
+      }
+    },
+    ['params']
+  )
+)

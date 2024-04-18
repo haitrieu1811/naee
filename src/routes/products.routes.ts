@@ -9,7 +9,8 @@ import {
   getAllBrandsController,
   getAllCategoriesController,
   updateBrandController,
-  updateCategoryController
+  updateCategoryController,
+  updateProductController
 } from '~/controllers/products.controllers'
 import { filterReqBodyMiddleware, paginationValidator } from '~/middlewares/common.middlewares'
 import {
@@ -17,7 +18,8 @@ import {
   createBrandValidator,
   createProductCategoryValidator,
   createProductValidator,
-  productCategoryIdValidator
+  productCategoryIdValidator,
+  productIdValidator
 } from '~/middlewares/products.middlewares'
 import { accessTokenValidator, isAdminValidator } from '~/middlewares/users.middlewares'
 import {
@@ -103,6 +105,27 @@ productsRouter.post(
     'thumbnail'
   ]),
   wrapRequestHandler(createProductController)
+)
+
+productsRouter.put(
+  '/:productId',
+  accessTokenValidator,
+  isAdminValidator,
+  productIdValidator,
+  createProductValidator,
+  filterReqBodyMiddleware<CreateProductReqBody>([
+    'availableCount',
+    'brandId',
+    'description',
+    'discountType',
+    'discountValue',
+    'name',
+    'photos',
+    'price',
+    'productCategoryId',
+    'thumbnail'
+  ]),
+  wrapRequestHandler(updateProductController)
 )
 
 export default productsRouter

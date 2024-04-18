@@ -116,5 +116,9 @@ export const PRODUCT_MESSAGES = {
   PRODUCT_DISCOUNT_TYPE_IS_INVALID: 'Invalid product discount type.',
   PRODUCT_DISCOUNT_VALUE_MUST_BE_AN_INT: 'Product discount value must be an integer.',
   PRODUCT_DISCOUNT_VALUE_MUST_BE_GREATER_THAN_OR_EQUAL_ZERO:
-    'Product discount value must be greater than or equal zero.'
+    'Product discount value must be greater than or equal zero.',
+  UPDATE_PRODUCT_SUCCESS: 'Product update successful.',
+  PRODUCT_ID_IS_REQUIRED: 'Product id is required.',
+  PRODUCT_ID_IS_INVALID: 'Invalid product id.',
+  PRODUCT_NOT_FOUND: 'Product not found.'
 } as const

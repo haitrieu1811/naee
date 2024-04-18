@@ -30,3 +30,7 @@ export type CreateProductReqBody = {
   discountType?: ProductDiscountType
   discountValue?: number
 }
+
+export type ProductIdReqParams = ParamsDictionary & {
+  productId: string
+}

@@ -145,6 +145,33 @@ class ProductService {
       product: insertedProduct
     }
   }
+
+  async updateProduct({ dto, productId }: { dto: CreateProductReqBody; productId: string }) {
+    const dtoConfig = {
+      ...dto,
+      productCategoryId: new ObjectId(dto.productCategoryId),
+      brandId: new ObjectId(dto.brandId),
+      thumbnail: new ObjectId(dto.thumbnail),
+      photos: dto.photos?.map((photo) => new ObjectId(photo))
+    }
+    const updatedProduct = await databaseService.products.findOneAndUpdate(
+      {
+        _id: new ObjectId(productId)
+      },
+      {
+        $set: dtoConfig,
+        $currentDate: {
+          updatedAt: true
+        }
+      },
+      {
+        returnDocument: 'after'
+      }
+    )
+    return {
+      product: updatedProduct
+    }
+  }
 }
 
 const productService = new ProductService()

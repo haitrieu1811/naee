@@ -8,7 +8,8 @@ import {
   CreateBrandReqBody,
   CreateProductCategoryReqBody,
   CreateProductReqBody,
-  ProductCategoryIdReqParams
+  ProductCategoryIdReqParams,
+  ProductIdReqParams
 } from '~/models/requests/Product.requests'
 import { TokenPayload } from '~/models/requests/User.requests'
 import productService from '~/services/product.services'
@@ -103,6 +104,17 @@ export const createProductController = async (
   const result = await productService.createProduct({ dto: req.body, userId })
   return res.json({
     message: PRODUCT_MESSAGES.CREATE_PRODUCT_SUCCESS,
+    data: result
+  })
+}
+
+export const updateProductController = async (
+  req: Request<ProductIdReqParams, any, CreateProductReqBody>,
+  res: Response
+) => {
+  const result = await productService.updateProduct({ dto: req.body, productId: req.params.productId })
+  return res.json({
+    message: PRODUCT_MESSAGES.UPDATE_PRODUCT_SUCCESS,
     data: result
   })
 }
