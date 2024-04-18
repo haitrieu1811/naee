@@ -125,3 +125,17 @@ export const deleteProductController = async (req: Request<ProductIdReqParams>, 
     message: PRODUCT_MESSAGES.DELETE_PRODUCT_SUCCESS
   })
 }
+
+export const getProductsController = async (
+  req: Request<ParamsDictionary, any, any, PaginationReqQuery>,
+  res: Response
+) => {
+  const { products, ...pagination } = await productService.getProducts(req.query)
+  return res.json({
+    message: PRODUCT_MESSAGES.GET_PRODUCTS_SUCCESS,
+    data: {
+      products,
+      pagination
+    }
+  })
+}

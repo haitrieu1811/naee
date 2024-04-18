@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb'
+import { ProductDiscountType } from '~/constants/enum'
 
 import { PaginationReqQuery } from '~/models/requests/Common.requests'
 import {
@@ -176,6 +177,195 @@ class ProductService {
   async deleteProduct(productId: string) {
     await databaseService.products.deleteOne({ _id: new ObjectId(productId) })
     return true
+  }
+
+  async getProducts(query: PaginationReqQuery) {
+    const { page, limit, skip } = paginationConfig(query)
+    const [products, totalRows] = await Promise.all([
+      databaseService.products
+        .aggregate([
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'userId',
+              foreignField: '_id',
+              as: 'author'
+            }
+          },
+          {
+            $unwind: {
+              path: '$author'
+            }
+          },
+          {
+            $lookup: {
+              from: 'productCategories',
+              localField: 'productCategoryId',
+              foreignField: '_id',
+              as: 'category'
+            }
+          },
+          {
+            $unwind: {
+              path: '$category'
+            }
+          },
+          {
+            $lookup: {
+              from: 'brands',
+              localField: 'brandId',
+              foreignField: '_id',
+              as: 'brand'
+            }
+          },
+          {
+            $unwind: {
+              path: '$brand'
+            }
+          },
+          {
+            $lookup: {
+              from: 'files',
+              localField: 'thumbnail',
+              foreignField: '_id',
+              as: 'thumbnail'
+            }
+          },
+          {
+            $unwind: {
+              path: '$thumbnail'
+            }
+          },
+          {
+            $lookup: {
+              from: 'files',
+              localField: 'photos',
+              foreignField: '_id',
+              as: 'photos'
+            }
+          },
+          {
+            $addFields: {
+              thumbnail: {
+                $concat: ['https://naee-ap-southeast-1.s3.ap-southeast-1.amazonaws.com/images/', '$thumbnail.name']
+              },
+              photos: {
+                $map: {
+                  input: '$photos',
+                  as: 'photo',
+                  in: {
+                    $concat: ['https://naee-ap-southeast-1.s3.ap-southeast-1.amazonaws.com/images/', '$$photo.name']
+                  }
+                }
+              },
+              priceAfterDiscount: {
+                $switch: {
+                  branches: [
+                    {
+                      case: {
+                        $eq: ['$discountType', ProductDiscountType.Money]
+                      },
+                      then: {
+                        $subtract: ['$price', '$discountValue']
+                      }
+                    },
+                    {
+                      case: {
+                        $eq: ['$discountType', ProductDiscountType.Percent]
+                      },
+                      then: {
+                        $subtract: [
+                          '$price',
+                          {
+                            $multiply: [
+                              '$price',
+                              {
+                                $divide: ['$discountValue', 100]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  default: 'Did not match'
+                }
+              }
+            }
+          },
+          {
+            $group: {
+              _id: '$_id',
+              author: {
+                $first: '$author'
+              },
+              category: {
+                $first: '$category'
+              },
+              brand: {
+                $first: '$brand'
+              },
+              thumbnail: {
+                $first: '$thumbnail'
+              },
+              name: {
+                $first: '$name'
+              },
+              description: {
+                $first: '$description'
+              },
+              photos: {
+                $first: '$photos'
+              },
+              originalPrice: {
+                $first: '$price'
+              },
+              priceAfterDiscount: {
+                $first: '$priceAfterDiscount'
+              },
+              availableCount: {
+                $first: '$availableCount'
+              },
+              createdAt: {
+                $first: '$createdAt'
+              },
+              updatedAt: {
+                $first: '$updatedAt'
+              }
+            }
+          },
+          {
+            $project: {
+              'author.password': 0,
+              'author.phoneNumber': 0,
+              'author.avatar': 0,
+              'author.verifyEmailToken': 0,
+              'author.forgotPasswordToken': 0,
+              'author.addresses': 0,
+              'author.status': 0,
+              'author.role': 0,
+              'author.verify': 0,
+              'category.userId': 0,
+              'brand.userId': 0
+            }
+          },
+          {
+            $skip: skip
+          },
+          {
+            $limit: limit
+          }
+        ])
+        .toArray(),
+      databaseService.products.countDocuments({})
+    ])
+    return {
+      products,
+      page,
+      limit,
+      totalRows,
+      totalPages: Math.ceil(totalRows / limit)
+    }
   }
 }
 
