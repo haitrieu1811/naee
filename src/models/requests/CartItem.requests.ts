@@ -15,3 +15,8 @@ export type CartItemIdOptionalReqParams = ParamsDictionary & {
 export type UpdateCartItemQuantityReqBody = {
   quantity: number
 }
+
+export type CheckoutReqBody = {
+  voucherId?: string
+  totalAmountReduced?: number
+}

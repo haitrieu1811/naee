@@ -5,6 +5,7 @@ import Address from '~/models/schemas/Address.schema'
 import Brand from '~/models/schemas/Brand.schema'
 import CartItem from '~/models/schemas/CartItem.schema'
 import File from '~/models/schemas/File.schema'
+import Order from '~/models/schemas/Order.schema'
 import Product from '~/models/schemas/Product.schema'
 import ProductCategory from '~/models/schemas/ProductCategory.schema'
 import { Province } from '~/models/schemas/Province.schema'
@@ -97,6 +98,10 @@ class DatabaseService {
 
   get cartItems(): Collection<CartItem> {
     return this.db.collection(ENV_CONFIG.DB_CART_ITEMS_COLLECTION_NAME)
+  }
+
+  get orders(): Collection<Order> {
+    return this.db.collection(ENV_CONFIG.DB_ORDERS_COLLECTION_NAME)
   }
 }
 

@@ -139,5 +139,15 @@ export const CART_MESSAGES = {
   CART_ITEM_NOT_FOUND: 'Cart item not found.',
   DELETE_CART_ITEM_SUCCESS: 'Deleted cart item successfully.',
   DELETE_ALL_CART_SUCCESS: 'Successfully deleted all products in the cart.',
-  GET_CART_ITEMS_SUCCESS: 'Get cart items successfully.'
+  GET_CART_ITEMS_SUCCESS: 'Get cart items successfully.',
+  ORDER_SUCCESS: 'Order success.',
+  TOTAL_AMOUNT_REDUCED_IS_REQUIRED: 'Total amount reduced is required.',
+  TOTAL_AMOUNT_REDUCED_MUST_BE_AN_INT: 'Total amount reduced must be an integer.',
+  TOTAL_AMOUNT_REDUCED_MUST_BE_GREATER_THAN_OR_EQUAL_ZERO: 'Total amount reduced must be greater than or equal zero.',
+  TOTAL_AMOUNT_REDUCED_MUST_BE_LESS_THAN_TOTAL_AMOUNT: 'Total amount reduced must be less than total amount.',
+  CART_IS_EMPTY: 'Cart is empty.'
+} as const
+
+export const VOUCHER_MESSAGES = {
+  VOUCHER_ID_IS_INVALID: 'Invalid voucher id.'
 } as const

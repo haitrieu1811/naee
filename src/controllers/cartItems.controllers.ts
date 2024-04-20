@@ -6,6 +6,7 @@ import {
   AddToCartReqBody,
   CartItemIdOptionalReqParams,
   CartItemIdReqParams,
+  CheckoutReqBody,
   UpdateCartItemQuantityReqBody
 } from '~/models/requests/CartItem.requests'
 import { PaginationReqQuery } from '~/models/requests/Common.requests'
@@ -60,5 +61,14 @@ export const getCartItemsController = async (
       cartItems,
       pagination
     }
+  })
+}
+
+export const checkoutController = async (req: Request<ParamsDictionary, any, CheckoutReqBody>, res: Response) => {
+  const { userId } = req.decodedAuthorization as TokenPayload
+  const result = await cartItemService.checkout({ userId, dto: req.body })
+  return res.json({
+    message: CART_MESSAGES.ORDER_SUCCESS,
+    data: result
   })
 }

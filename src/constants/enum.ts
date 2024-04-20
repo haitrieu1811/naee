@@ -113,3 +113,11 @@ export enum CartItemStatus {
   InCart,
   NotInCart
 }
+
+export enum OrderStatus {
+  WaitForConfirmation,
+  Confirmed,
+  BeingTransported,
+  Accomplished,
+  Cancelled
+}
