@@ -203,6 +203,11 @@ class OrderService {
       order: updatedOrder
     }
   }
+
+  async deleteOrder(orderId: string) {
+    await databaseService.orders.deleteOne({ _id: new ObjectId(orderId) })
+    return true
+  }
 }
 
 const orderService = new OrderService()

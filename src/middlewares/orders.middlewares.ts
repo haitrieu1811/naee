@@ -40,13 +40,6 @@ export const orderIdValidator = validate(
                 status: HttpStatusCode.NotFound
               })
             }
-            const { userId } = (req as Request).decodedAuthorization as TokenPayload
-            if (order.userId.toString() !== userId) {
-              throw new ErrorWithStatus({
-                message: USER_MESSAGES.PERMISSION_DENIED,
-                status: HttpStatusCode.Forbidden
-              })
-            }
             return true
           }
         }
@@ -95,3 +88,17 @@ export const updateOrderStatusValidator = validate(
     ['body']
   )
 )
+
+export const isAuthorOfOrderValidator = async (req: Request<OrderIdReqParams>, _: Response, next: NextFunction) => {
+  const { userId } = req.decodedAuthorization as TokenPayload
+  const order = (await databaseService.orders.findOne({ _id: new ObjectId(req.params.orderId) })) as WithId<Order>
+  if (order.userId.toString() !== userId) {
+    next(
+      new ErrorWithStatus({
+        message: USER_MESSAGES.PERMISSION_DENIED,
+        status: HttpStatusCode.Forbidden
+      })
+    )
+  }
+  next()
+}

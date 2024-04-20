@@ -162,5 +162,6 @@ export const ORDER_MESSAGES = {
   CAN_NOT_CANCEL_ORDER: 'Order cannot be canceled.',
   UPDATE_ORDER_STATUS_SUCCESS: 'Update order status successfully.',
   ORDER_STATUS_IS_REQUIRED: 'Order status is required.',
-  ORDER_STATUS_IS_INVALID: 'Invalid order status.'
+  ORDER_STATUS_IS_INVALID: 'Invalid order status.',
+  DELETE_ORDER_SUCCESS: 'Order deleted successfully.'
 } as const
