@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb'
 
 import { ENV_CONFIG } from '~/constants/config'
+import { OrderStatus } from '~/constants/enum'
 import { PaginationReqQuery } from '~/models/requests/Common.requests'
 import databaseService from '~/services/database.services'
 import { paginationConfig } from '~/utils/utils'
@@ -139,6 +140,28 @@ class OrderService {
       limit,
       totalRows,
       totalPages: Math.ceil(totalRows / limit)
+    }
+  }
+
+  async cancelOrder(orderId: string) {
+    const updatedOrder = await databaseService.orders.findOneAndUpdate(
+      {
+        _id: new ObjectId(orderId)
+      },
+      {
+        $set: {
+          status: OrderStatus.Cancelled
+        },
+        $currentDate: {
+          updatedAt: true
+        }
+      },
+      {
+        returnDocument: 'after'
+      }
+    )
+    return {
+      order: updatedOrder
     }
   }
 }

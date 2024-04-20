@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
 
 import { ORDER_MESSAGES } from '~/constants/message'
+import { OrderIdReqParams } from '~/models/requests/Order.requests'
 import { TokenPayload } from '~/models/requests/User.requests'
 import orderService from '~/services/orders.services'
 
@@ -14,5 +15,13 @@ export const getMyOrdersController = async (req: Request<ParamsDictionary>, res:
       orders,
       pagination
     }
+  })
+}
+
+export const cancelOrderController = async (req: Request<OrderIdReqParams>, res: Response) => {
+  const result = await orderService.cancelOrder(req.params.orderId)
+  return res.json({
+    message: ORDER_MESSAGES.CANCEL_ORDER_SUCCESS,
+    data: result
   })
 }

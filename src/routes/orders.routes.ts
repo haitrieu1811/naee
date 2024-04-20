@@ -1,7 +1,8 @@
 import { Router } from 'express'
 
-import { getMyOrdersController } from '~/controllers/orders.controllers'
+import { cancelOrderController, getMyOrdersController } from '~/controllers/orders.controllers'
 import { paginationValidator } from '~/middlewares/common.middlewares'
+import { orderIdValidator } from '~/middlewares/orders.middlewares'
 import { accessTokenValidator, verifiedUserValidator } from '~/middlewares/users.middlewares'
 import { wrapRequestHandler } from '~/utils/handler'
 
@@ -13,6 +14,14 @@ ordersRouter.get(
   verifiedUserValidator,
   paginationValidator,
   wrapRequestHandler(getMyOrdersController)
+)
+
+ordersRouter.post(
+  '/:orderId/cancel',
+  accessTokenValidator,
+  verifiedUserValidator,
+  orderIdValidator,
+  wrapRequestHandler(cancelOrderController)
 )
 
 export default ordersRouter

@@ -153,5 +153,10 @@ export const VOUCHER_MESSAGES = {
 } as const
 
 export const ORDER_MESSAGES = {
-  GET_MY_ORDERS_SUCCESS: 'Get my orders successfully.'
+  GET_MY_ORDERS_SUCCESS: 'Get my orders successfully.',
+  CANCEL_ORDER_SUCCESS: 'Cancel order successfully.',
+  ORDER_ID_IS_REQUIRED: 'Order id is required.',
+  ORDER_ID_IS_INVALID: 'Invalid order id.',
+  ORDER_NOT_FOUND: 'Order not found.',
+  CAN_NOT_CANCEL_ORDER: 'Order cannot be canceled.'
 } as const
