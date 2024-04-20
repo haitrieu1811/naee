@@ -151,3 +151,7 @@ export const CART_MESSAGES = {
 export const VOUCHER_MESSAGES = {
   VOUCHER_ID_IS_INVALID: 'Invalid voucher id.'
 } as const
+
+export const ORDER_MESSAGES = {
+  GET_MY_ORDERS_SUCCESS: 'Get my orders successfully.'
+} as const
