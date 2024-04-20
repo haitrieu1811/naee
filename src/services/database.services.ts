@@ -64,6 +64,24 @@ class DatabaseService {
     await Promise.all([this.addresses.createIndex({ userId: 1 })])
   }
 
+  async indexCartItems() {
+    const isExists = await this.cartItems.indexExists([
+      'userId_1_status_1',
+      'userId_1_productId_1_status_1',
+      'userId_1_productId_1',
+      '_id_1_userId_1',
+      'userId_1'
+    ])
+    if (isExists) return
+    await Promise.all([
+      this.cartItems.createIndex({ userId: 1, status: 1 }),
+      this.cartItems.createIndex({ userId: 1, productId: 1, status: 1 }),
+      this.cartItems.createIndex({ userId: 1, productId: 1 }),
+      this.cartItems.createIndex({ _id: 1, userId: 1 }),
+      this.cartItems.createIndex({ userId: 1 })
+    ])
+  }
+
   get users(): Collection<User> {
     return this.db.collection(ENV_CONFIG.DB_USERS_COLLECTION_NAME)
   }
