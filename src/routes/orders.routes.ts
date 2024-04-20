@@ -1,8 +1,13 @@
 import { Router } from 'express'
 
-import { cancelOrderController, getAllOrdersController, getMyOrdersController } from '~/controllers/orders.controllers'
+import {
+  cancelOrderController,
+  getAllOrdersController,
+  getMyOrdersController,
+  updateOrderStatusController
+} from '~/controllers/orders.controllers'
 import { paginationValidator } from '~/middlewares/common.middlewares'
-import { orderIdValidator } from '~/middlewares/orders.middlewares'
+import { cancelOrderValidator, orderIdValidator, updateOrderStatusValidator } from '~/middlewares/orders.middlewares'
 import { accessTokenValidator, isAdminValidator, verifiedUserValidator } from '~/middlewares/users.middlewares'
 import { wrapRequestHandler } from '~/utils/handler'
 
@@ -21,6 +26,7 @@ ordersRouter.post(
   accessTokenValidator,
   verifiedUserValidator,
   orderIdValidator,
+  cancelOrderValidator,
   wrapRequestHandler(cancelOrderController)
 )
 
@@ -31,6 +37,16 @@ ordersRouter.get(
   isAdminValidator,
   paginationValidator,
   wrapRequestHandler(getAllOrdersController)
+)
+
+ordersRouter.patch(
+  '/:orderId/update-status',
+  accessTokenValidator,
+  verifiedUserValidator,
+  isAdminValidator,
+  orderIdValidator,
+  updateOrderStatusValidator,
+  wrapRequestHandler(updateOrderStatusController)
 )
 
 export default ordersRouter

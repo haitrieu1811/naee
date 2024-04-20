@@ -3,7 +3,7 @@ import { ParamsDictionary } from 'express-serve-static-core'
 
 import { ORDER_MESSAGES } from '~/constants/message'
 import { PaginationReqQuery } from '~/models/requests/Common.requests'
-import { OrderIdReqParams } from '~/models/requests/Order.requests'
+import { OrderIdReqParams, UpdateOrderStatusReqBody } from '~/models/requests/Order.requests'
 import { TokenPayload } from '~/models/requests/User.requests'
 import orderService from '~/services/orders.services'
 
@@ -41,5 +41,16 @@ export const getAllOrdersController = async (
       orders,
       pagination
     }
+  })
+}
+
+export const updateOrderStatusController = async (
+  req: Request<OrderIdReqParams, any, UpdateOrderStatusReqBody>,
+  res: Response
+) => {
+  const result = await orderService.updateOrderStatus({ orderId: req.params.orderId, status: req.body.status })
+  return res.json({
+    message: ORDER_MESSAGES.UPDATE_ORDER_STATUS_SUCCESS,
+    data: result
   })
 }

@@ -159,5 +159,8 @@ export const ORDER_MESSAGES = {
   ORDER_ID_IS_REQUIRED: 'Order id is required.',
   ORDER_ID_IS_INVALID: 'Invalid order id.',
   ORDER_NOT_FOUND: 'Order not found.',
-  CAN_NOT_CANCEL_ORDER: 'Order cannot be canceled.'
+  CAN_NOT_CANCEL_ORDER: 'Order cannot be canceled.',
+  UPDATE_ORDER_STATUS_SUCCESS: 'Update order status successfully.',
+  ORDER_STATUS_IS_REQUIRED: 'Order status is required.',
+  ORDER_STATUS_IS_INVALID: 'Invalid order status.'
 } as const

@@ -181,6 +181,28 @@ class OrderService {
       totalPages: Math.ceil(totalRows / limit)
     }
   }
+
+  async updateOrderStatus({ status, orderId }: { status: OrderStatus; orderId: string }) {
+    const updatedOrder = await databaseService.orders.findOneAndUpdate(
+      {
+        _id: new ObjectId(orderId)
+      },
+      {
+        $set: {
+          status
+        },
+        $currentDate: {
+          updatedAt: true
+        }
+      },
+      {
+        returnDocument: 'after'
+      }
+    )
+    return {
+      order: updatedOrder
+    }
+  }
 }
 
 const orderService = new OrderService()
