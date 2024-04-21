@@ -28,3 +28,10 @@ export const updateReviewController = async (
     data: result
   })
 }
+
+export const deleteReviewController = async (req: Request<ReviewIdReqParams>, res: Response) => {
+  await reviewService.delete(req.params.reviewId)
+  return res.json({
+    message: REVIEW_MESSAGES.DELETE_REVIEW_SUCCESS
+  })
+}

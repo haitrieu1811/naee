@@ -1,6 +1,10 @@
 import { Router } from 'express'
 
-import { createReviewController, updateReviewController } from '~/controllers/reviews.controllers'
+import {
+  createReviewController,
+  deleteReviewController,
+  updateReviewController
+} from '~/controllers/reviews.controllers'
 import { filterReqBodyMiddleware } from '~/middlewares/common.middlewares'
 import { productIdValidator } from '~/middlewares/products.middlewares'
 import {
@@ -34,6 +38,14 @@ reviewsRouter.put(
   updateReviewValidator,
   filterReqBodyMiddleware<UpdateReviewReqBody>(['starPoint', 'content', 'photos']),
   wrapRequestHandler(updateReviewController)
+)
+
+reviewsRouter.delete(
+  '/:reviewId',
+  accessTokenValidator,
+  verifiedUserValidator,
+  reviewIdValidator,
+  wrapRequestHandler(deleteReviewController)
 )
 
 export default reviewsRouter

@@ -42,6 +42,11 @@ class ReviewService {
       review: updatedReview
     }
   }
+
+  async delete(reviewId: string) {
+    await databaseService.reviews.deleteOne({ _id: new ObjectId(reviewId) })
+    return true
+  }
 }
 
 const reviewService = new ReviewService()

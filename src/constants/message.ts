@@ -175,5 +175,6 @@ export const REVIEW_MESSAGES = {
   REVIEW_ID_IS_REQUIRED: 'Review id is required.',
   REVIEW_ID_IS_INVALID: 'Invalid review id.',
   REVIEW_NOT_FOUND: 'Review not found.',
-  CONTENT_IS_REQUIRED: 'Review content is required.'
+  CONTENT_IS_REQUIRED: 'Review content is required.',
+  DELETE_REVIEW_SUCCESS: 'Successfully deleted review.'
 } as const
