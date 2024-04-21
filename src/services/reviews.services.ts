@@ -2,6 +2,7 @@ import { ObjectId } from 'mongodb'
 
 import { CreateReviewReqBody, UpdateReviewReqBody } from '~/models/requests/Review.requests'
 import Review from '~/models/schemas/Review.schema'
+import ReviewReply from '~/models/schemas/ReviewReply.schema'
 import databaseService from '~/services/database.services'
 
 class ReviewService {
@@ -46,6 +47,39 @@ class ReviewService {
   async delete(reviewId: string) {
     await databaseService.reviews.deleteOne({ _id: new ObjectId(reviewId) })
     return true
+  }
+
+  async replyReview({ reviewId, content, userId }: { reviewId: string; userId: string; content: string }) {
+    const { insertedId } = await databaseService.reviewReplies.insertOne(
+      new ReviewReply({
+        reviewId: new ObjectId(reviewId),
+        userId: new ObjectId(userId),
+        content
+      })
+    )
+    const [updatedReview, insertedReviewReply] = await Promise.all([
+      databaseService.reviews.findOneAndUpdate(
+        {
+          _id: new ObjectId(reviewId)
+        },
+        {
+          $push: {
+            replies: insertedId
+          },
+          $currentDate: {
+            updatedAt: true
+          }
+        },
+        {
+          returnDocument: 'after'
+        }
+      ),
+      databaseService.reviewReplies.findOne({ _id: insertedId })
+    ])
+    return {
+      review: updatedReview,
+      reviewReply: insertedReviewReply
+    }
   }
 }
 

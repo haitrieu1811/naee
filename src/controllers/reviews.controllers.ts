@@ -2,7 +2,12 @@ import { Request, Response } from 'express'
 
 import { REVIEW_MESSAGES } from '~/constants/message'
 import { ProductIdReqParams } from '~/models/requests/Product.requests'
-import { CreateReviewReqBody, ReviewIdReqParams, UpdateReviewReqBody } from '~/models/requests/Review.requests'
+import {
+  CreateReviewReqBody,
+  ReplyReviewReqBody,
+  ReviewIdReqParams,
+  UpdateReviewReqBody
+} from '~/models/requests/Review.requests'
 import { TokenPayload } from '~/models/requests/User.requests'
 import reviewService from '~/services/reviews.services'
 
@@ -33,5 +38,17 @@ export const deleteReviewController = async (req: Request<ReviewIdReqParams>, re
   await reviewService.delete(req.params.reviewId)
   return res.json({
     message: REVIEW_MESSAGES.DELETE_REVIEW_SUCCESS
+  })
+}
+
+export const replyReviewController = async (
+  req: Request<ReviewIdReqParams, any, ReplyReviewReqBody>,
+  res: Response
+) => {
+  const { userId } = req.decodedAuthorization as TokenPayload
+  const result = await reviewService.replyReview({ content: req.body.content, reviewId: req.params.reviewId, userId })
+  return res.json({
+    message: REVIEW_MESSAGES.REPLY_REVIEW_SUCCESS,
+    data: result
   })
 }

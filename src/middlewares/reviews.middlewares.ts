@@ -7,6 +7,7 @@ import { REVIEW_MESSAGES, USER_MESSAGES } from '~/constants/message'
 import { photosSchema } from '~/middlewares/products.middlewares'
 import { ErrorWithStatus } from '~/models/Errors'
 import { ProductIdReqParams } from '~/models/requests/Product.requests'
+import { ReviewIdReqParams } from '~/models/requests/Review.requests'
 import { TokenPayload } from '~/models/requests/User.requests'
 import databaseService from '~/services/database.services'
 import { validate } from '~/utils/validation'
@@ -88,13 +89,6 @@ export const reviewIdValidator = validate(
                 status: HttpStatusCode.NotFound
               })
             }
-            const { userId } = (req as Request).decodedAuthorization as TokenPayload
-            if (userId !== review.userId.toString()) {
-              throw new ErrorWithStatus({
-                message: USER_MESSAGES.PERMISSION_DENIED,
-                status: HttpStatusCode.Forbidden
-              })
-            }
             return true
           }
         }
@@ -103,6 +97,20 @@ export const reviewIdValidator = validate(
     ['params']
   )
 )
+
+export const authorOfReviewValidator = async (req: Request<ReviewIdReqParams>, _: Response, next: NextFunction) => {
+  const { userId } = req.decodedAuthorization as TokenPayload
+  const review = await databaseService.reviews.findOne({ _id: new ObjectId(req.params.reviewId) })
+  if (userId !== review?.userId.toString()) {
+    next(
+      new ErrorWithStatus({
+        message: USER_MESSAGES.PERMISSION_DENIED,
+        status: HttpStatusCode.Forbidden
+      })
+    )
+  }
+  next()
+}
 
 export const updateReviewValidator = validate(
   checkSchema(
@@ -117,6 +125,20 @@ export const updateReviewValidator = validate(
       photos: {
         ...photosSchema,
         optional: false
+      }
+    },
+    ['body']
+  )
+)
+
+export const replyReviewValidator = validate(
+  checkSchema(
+    {
+      content: {
+        trim: true,
+        notEmpty: {
+          errorMessage: REVIEW_MESSAGES.REPLY_CONTENT_IS_REQUIRED
+        }
       }
     },
     ['body']
