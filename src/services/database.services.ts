@@ -82,6 +82,12 @@ class DatabaseService {
     ])
   }
 
+  async indexOrders() {
+    const isExists = await this.orders.indexExists(['userId_1'])
+    if (isExists) return
+    await Promise.all([this.orders.createIndex({ userId: 1 })])
+  }
+
   get users(): Collection<User> {
     return this.db.collection(ENV_CONFIG.DB_USERS_COLLECTION_NAME)
   }

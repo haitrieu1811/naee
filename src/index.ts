@@ -17,6 +17,7 @@ databaseService.connect().then(() => {
   databaseService.indexRefreshTokens()
   databaseService.indexAddresses()
   databaseService.indexCartItems()
+  databaseService.indexOrders()
 })
 
 initFolders()
