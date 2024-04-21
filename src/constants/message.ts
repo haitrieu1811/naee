@@ -170,5 +170,10 @@ export const REVIEW_MESSAGES = {
   STAR_POINT_IS_REQUIRED: 'Star point is required.',
   STAR_POINT_IS_INVALID: 'Invalid star point.',
   CREATE_REVIEW_SUCCESS: 'Create a successful review.',
-  REVIEWED_BEFORE: 'You have reviewed this product before.'
+  REVIEWED_BEFORE: 'You have reviewed this product before.',
+  UPDATE_REVIEW_SUCCESS: 'Updated review successfully.',
+  REVIEW_ID_IS_REQUIRED: 'Review id is required.',
+  REVIEW_ID_IS_INVALID: 'Invalid review id.',
+  REVIEW_NOT_FOUND: 'Review not found.',
+  CONTENT_IS_REQUIRED: 'Review content is required.'
 } as const

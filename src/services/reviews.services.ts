@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb'
 
-import { CreateReviewReqBody } from '~/models/requests/Review.requests'
+import { CreateReviewReqBody, UpdateReviewReqBody } from '~/models/requests/Review.requests'
 import Review from '~/models/schemas/Review.schema'
 import databaseService from '~/services/database.services'
 
@@ -17,6 +17,29 @@ class ReviewService {
     const insertedReview = await databaseService.reviews.findOne({ _id: insertedId })
     return {
       review: insertedReview
+    }
+  }
+
+  async update({ dto, reviewId }: { dto: UpdateReviewReqBody; reviewId: string }) {
+    const updatedReview = await databaseService.reviews.findOneAndUpdate(
+      {
+        _id: new ObjectId(reviewId)
+      },
+      {
+        $set: {
+          ...dto,
+          photos: dto.photos.map((item) => new ObjectId(item))
+        },
+        $currentDate: {
+          updatedAt: true
+        }
+      },
+      {
+        returnDocument: 'after'
+      }
+    )
+    return {
+      review: updatedReview
     }
   }
 }
