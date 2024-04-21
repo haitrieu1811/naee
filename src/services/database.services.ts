@@ -10,6 +10,7 @@ import Product from '~/models/schemas/Product.schema'
 import ProductCategory from '~/models/schemas/ProductCategory.schema'
 import { Province } from '~/models/schemas/Province.schema'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
+import Review from '~/models/schemas/Review.schema'
 import User from '~/models/schemas/User.schema'
 
 const uri = `mongodb+srv://${ENV_CONFIG.DB_USERNAME}:${ENV_CONFIG.DB_PASSWORD}@naee-cluster.enmafwr.mongodb.net/?retryWrites=true&w=majority&appName=naee-cluster`
@@ -126,6 +127,10 @@ class DatabaseService {
 
   get orders(): Collection<Order> {
     return this.db.collection(ENV_CONFIG.DB_ORDERS_COLLECTION_NAME)
+  }
+
+  get reviews(): Collection<Review> {
+    return this.db.collection(ENV_CONFIG.DB_REVIEWS_COLLECTION_NAME)
   }
 }
 

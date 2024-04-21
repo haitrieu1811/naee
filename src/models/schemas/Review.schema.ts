@@ -7,6 +7,7 @@ type ReviewConstructor = {
   starPoint: 1 | 2 | 3 | 4 | 5
   content?: string
   photos?: ObjectId[]
+  replies?: ObjectId[]
   createdAt?: Date
   updatedAt?: Date
 }
@@ -18,10 +19,21 @@ export default class Review {
   starPoint: 1 | 2 | 3 | 4 | 5
   content: string
   photos: ObjectId[]
+  replies: ObjectId[]
   createdAt: Date
   updatedAt: Date
 
-  constructor({ _id, userId, productId, starPoint, content, photos, createdAt, updatedAt }: ReviewConstructor) {
+  constructor({
+    _id,
+    userId,
+    productId,
+    starPoint,
+    content,
+    photos,
+    replies,
+    createdAt,
+    updatedAt
+  }: ReviewConstructor) {
     const date = new Date()
     this._id = _id
     this.userId = userId
@@ -29,6 +41,7 @@ export default class Review {
     this.starPoint = starPoint
     this.content = content || ''
     this.photos = photos || []
+    this.replies = replies || []
     this.createdAt = createdAt || date
     this.updatedAt = updatedAt || date
   }

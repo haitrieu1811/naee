@@ -1,7 +1,9 @@
 export const GENERAL_MESSAGES = {
   VALIDATION_ERROR: 'Validation error.',
   PAGE_MUST_BE_A_INTEGER_AND_POSITIVE: 'Page must be a positive integer.',
-  LIMIT_MUST_BE_A_INTEGER_AND_POSITIVE: 'Limit must be a positive integer.'
+  LIMIT_MUST_BE_A_INTEGER_AND_POSITIVE: 'Limit must be a positive integer.',
+  PHOTOS_MUST_BE_AN_ARRAY: 'Photos must be an array.',
+  PHOTOS_MUST_BE_AN_ARRAY_OBJECTID: 'Photos must be an array of objectIds.'
 } as const
 
 export const USER_MESSAGES = {
@@ -105,8 +107,6 @@ export const PRODUCT_MESSAGES = {
   PRODUCT_DESCRIPTION_IS_REQUIRED: 'Product description is required.',
   PRODUCT_THUMBNAIL_IS_INVALID: 'Invalid product thumbnail.',
   PRODUCT_NAME_IS_REQUIRED: 'Product name is required.',
-  PRODUCT_PHOTOS_MUST_BE_AN_ARRAY: 'Product photos must be an array.',
-  PRODUCT_PHOTOS_MUST_BE_AN_ARRAY_OBJECTID: 'Photos must be an array of objectIds.',
   PRODUCT_AVAILABEL_COUNT_IS_REQUIRED: 'Product available count is required.',
   PRODUCT_AVAILABEL_COUNT_MUST_BE_AN_INT: 'Product available count must be an integer.',
   PRODUCT_AVAILABEL_COUNT_MUST_BE_GREATER_THAN_ZERO: 'Product available count must be greater than zero.',
@@ -164,4 +164,11 @@ export const ORDER_MESSAGES = {
   ORDER_STATUS_IS_REQUIRED: 'Order status is required.',
   ORDER_STATUS_IS_INVALID: 'Invalid order status.',
   DELETE_ORDER_SUCCESS: 'Order deleted successfully.'
+} as const
+
+export const REVIEW_MESSAGES = {
+  STAR_POINT_IS_REQUIRED: 'Star point is required.',
+  STAR_POINT_IS_INVALID: 'Invalid star point.',
+  CREATE_REVIEW_SUCCESS: 'Create a successful review.',
+  REVIEWED_BEFORE: 'You have reviewed this product before.'
 } as const

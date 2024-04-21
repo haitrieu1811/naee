@@ -2,7 +2,7 @@ import { ParamSchema, checkSchema } from 'express-validator'
 import { ObjectId } from 'mongodb'
 
 import { HttpStatusCode, ProductDiscountType } from '~/constants/enum'
-import { PRODUCT_MESSAGES } from '~/constants/message'
+import { GENERAL_MESSAGES, PRODUCT_MESSAGES } from '~/constants/message'
 import { ErrorWithStatus } from '~/models/Errors'
 import databaseService from '~/services/database.services'
 import { numberEnumToArray } from '~/utils/utils'
@@ -73,6 +73,28 @@ const brandIdSchema: ParamSchema = {
         throw new ErrorWithStatus({
           message: PRODUCT_MESSAGES.BRAND_NOT_FOUND,
           status: HttpStatusCode.NotFound
+        })
+      }
+      return true
+    }
+  }
+}
+
+export const photosSchema: ParamSchema = {
+  optional: true,
+  custom: {
+    options: (value) => {
+      if (!Array.isArray(value)) {
+        throw new ErrorWithStatus({
+          message: GENERAL_MESSAGES.PHOTOS_MUST_BE_AN_ARRAY,
+          status: HttpStatusCode.BadRequest
+        })
+      }
+      const isValid = value.every((item) => ObjectId.isValid(item))
+      if (!isValid) {
+        throw new ErrorWithStatus({
+          message: GENERAL_MESSAGES.PHOTOS_MUST_BE_AN_ARRAY_OBJECTID,
+          status: HttpStatusCode.BadRequest
         })
       }
       return true
@@ -159,27 +181,7 @@ export const createProductValidator = validate(
           }
         }
       },
-      photos: {
-        optional: true,
-        custom: {
-          options: (value) => {
-            if (!Array.isArray(value)) {
-              throw new ErrorWithStatus({
-                message: PRODUCT_MESSAGES.PRODUCT_PHOTOS_MUST_BE_AN_ARRAY,
-                status: HttpStatusCode.BadRequest
-              })
-            }
-            const isValid = value.every((item) => ObjectId.isValid(item))
-            if (!isValid) {
-              throw new ErrorWithStatus({
-                message: PRODUCT_MESSAGES.PRODUCT_PHOTOS_MUST_BE_AN_ARRAY_OBJECTID,
-                status: HttpStatusCode.BadRequest
-              })
-            }
-            return true
-          }
-        }
-      },
+      photos: photosSchema,
       availableCount: {
         notEmpty: {
           errorMessage: PRODUCT_MESSAGES.PRODUCT_AVAILABEL_COUNT_IS_REQUIRED
