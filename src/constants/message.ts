@@ -179,8 +179,9 @@ export const REVIEW_MESSAGES = {
   DELETE_REVIEW_SUCCESS: 'Successfully deleted review.',
   REPLY_REVIEW_SUCCESS: 'Successfully replied to the review.',
   REPLY_CONTENT_IS_REQUIRED: 'The content of the reply is required.',
-  UPDATE_REPLY_REVIEW_SUCCESS: 'Updated reply successfully.',
+  UPDATE_REPLY_SUCCESS: 'Updated reply successfully.',
   REPLY_ID_IS_REQUIRED: 'Reply id is required.',
   REPLY_ID_IS_INVALID: 'Invalid reply id.',
-  REPLY_NOT_FOUND: 'Reply not found.'
+  REPLY_NOT_FOUND: 'Reply not found.',
+  DELETE_REPLY_SUCCESS: 'Delete reply successfully.'
 } as const

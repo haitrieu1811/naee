@@ -103,6 +103,11 @@ class ReviewService {
       replyReview: updatedReply
     }
   }
+
+  async deleteReply(replyId: string) {
+    await databaseService.reviewReplies.deleteOne({ _id: new ObjectId(replyId) })
+    return true
+  }
 }
 
 const reviewService = new ReviewService()

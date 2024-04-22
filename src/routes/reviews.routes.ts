@@ -2,6 +2,7 @@ import { Router } from 'express'
 
 import {
   createReviewController,
+  deleteReplyController,
   deleteReviewController,
   replyReviewController,
   updateReplyController,
@@ -73,6 +74,15 @@ reviewsRouter.patch(
   replyIdValidator,
   replyReviewValidator,
   wrapRequestHandler(updateReplyController)
+)
+
+reviewsRouter.delete(
+  '/replies/:replyId',
+  accessTokenValidator,
+  verifiedUserValidator,
+  isAdminValidator,
+  replyIdValidator,
+  wrapRequestHandler(deleteReplyController)
 )
 
 export default reviewsRouter

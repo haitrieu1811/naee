@@ -57,7 +57,14 @@ export const replyReviewController = async (
 export const updateReplyController = async (req: Request<ReplyIdReqParams, any, ReplyReviewReqBody>, res: Response) => {
   const result = await reviewService.updateReply({ content: req.body.content, replyId: req.params.replyId })
   return res.json({
-    message: REVIEW_MESSAGES.UPDATE_REPLY_REVIEW_SUCCESS,
+    message: REVIEW_MESSAGES.UPDATE_REPLY_SUCCESS,
     data: result
+  })
+}
+
+export const deleteReplyController = async (req: Request<ReplyIdReqParams>, res: Response) => {
+  await reviewService.deleteReply(req.params.replyId)
+  return res.json({
+    message: REVIEW_MESSAGES.DELETE_REPLY_SUCCESS
   })
 }

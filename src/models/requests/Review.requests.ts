@@ -21,5 +21,5 @@ export type ReplyReviewReqBody = {
 }
 
 export type ReplyIdReqParams = ParamsDictionary & {
-  reviewReplyId: string
+  replyId: string
 }
