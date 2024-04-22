@@ -46,7 +46,7 @@ export const replyReviewController = async (
   res: Response
 ) => {
   const { userId } = req.decodedAuthorization as TokenPayload
-  const result = await reviewService.replyReview({ content: req.body.content, reviewId: req.params.reviewId, userId })
+  const result = await reviewService.reply({ content: req.body.content, reviewId: req.params.reviewId, userId })
   return res.json({
     message: REVIEW_MESSAGES.REPLY_REVIEW_SUCCESS,
     data: result

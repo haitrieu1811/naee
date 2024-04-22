@@ -49,7 +49,7 @@ class ReviewService {
     return true
   }
 
-  async replyReview({ reviewId, content, userId }: { reviewId: string; userId: string; content: string }) {
+  async reply({ reviewId, content, userId }: { reviewId: string; userId: string; content: string }) {
     const { insertedId } = await databaseService.reviewReplies.insertOne(
       new ReviewReply({
         reviewId: new ObjectId(reviewId),
