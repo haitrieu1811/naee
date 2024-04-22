@@ -4,6 +4,7 @@ import {
   createReviewController,
   deleteReviewController,
   replyReviewController,
+  updateReplyController,
   updateReviewController
 } from '~/controllers/reviews.controllers'
 import { filterReqBodyMiddleware } from '~/middlewares/common.middlewares'
@@ -12,6 +13,7 @@ import {
   authorOfReviewValidator,
   createReviewValidator,
   notReviewBeforeValidator,
+  replyIdValidator,
   replyReviewValidator,
   reviewIdValidator,
   updateReviewValidator
@@ -61,6 +63,16 @@ reviewsRouter.post(
   reviewIdValidator,
   replyReviewValidator,
   wrapRequestHandler(replyReviewController)
+)
+
+reviewsRouter.patch(
+  '/replies/:replyId',
+  accessTokenValidator,
+  verifiedUserValidator,
+  isAdminValidator,
+  replyIdValidator,
+  replyReviewValidator,
+  wrapRequestHandler(updateReplyController)
 )
 
 export default reviewsRouter

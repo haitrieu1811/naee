@@ -81,6 +81,28 @@ class ReviewService {
       reviewReply: insertedReviewReply
     }
   }
+
+  async updateReply({ replyId, content }: { replyId: string; content: string }) {
+    const updatedReply = await databaseService.reviewReplies.findOneAndUpdate(
+      {
+        _id: new ObjectId(replyId)
+      },
+      {
+        $set: {
+          content
+        },
+        $currentDate: {
+          updatedAt: true
+        }
+      },
+      {
+        returnDocument: 'after'
+      }
+    )
+    return {
+      replyReview: updatedReply
+    }
+  }
 }
 
 const reviewService = new ReviewService()

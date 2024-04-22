@@ -19,3 +19,7 @@ export type ReviewIdReqParams = ParamsDictionary & {
 export type ReplyReviewReqBody = {
   content: string
 }
+
+export type ReplyIdReqParams = ParamsDictionary & {
+  reviewReplyId: string
+}

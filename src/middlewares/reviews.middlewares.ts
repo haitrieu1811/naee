@@ -69,7 +69,7 @@ export const reviewIdValidator = validate(
       reviewId: {
         trim: true,
         custom: {
-          options: async (value: string, { req }) => {
+          options: async (value: string) => {
             if (!value) {
               throw new ErrorWithStatus({
                 message: REVIEW_MESSAGES.REVIEW_ID_IS_REQUIRED,
@@ -142,5 +142,47 @@ export const replyReviewValidator = validate(
       }
     },
     ['body']
+  )
+)
+
+export const replyIdValidator = validate(
+  checkSchema(
+    {
+      replyId: {
+        trim: true,
+        custom: {
+          options: async (value: string, { req }) => {
+            if (!value) {
+              throw new ErrorWithStatus({
+                message: REVIEW_MESSAGES.REPLY_ID_IS_REQUIRED,
+                status: HttpStatusCode.BadRequest
+              })
+            }
+            if (!ObjectId.isValid(value)) {
+              throw new ErrorWithStatus({
+                message: REVIEW_MESSAGES.REPLY_ID_IS_INVALID,
+                status: HttpStatusCode.BadRequest
+              })
+            }
+            const reply = await databaseService.reviewReplies.findOne({ _id: new ObjectId(value) })
+            if (!reply) {
+              throw new ErrorWithStatus({
+                message: REVIEW_MESSAGES.REPLY_NOT_FOUND,
+                status: HttpStatusCode.NotFound
+              })
+            }
+            const { userId } = (req as Request).decodedAuthorization as TokenPayload
+            if (userId !== reply.userId.toString()) {
+              throw new ErrorWithStatus({
+                message: USER_MESSAGES.PERMISSION_DENIED,
+                status: HttpStatusCode.Forbidden
+              })
+            }
+            return true
+          }
+        }
+      }
+    },
+    ['params']
   )
 )

@@ -4,6 +4,7 @@ import { REVIEW_MESSAGES } from '~/constants/message'
 import { ProductIdReqParams } from '~/models/requests/Product.requests'
 import {
   CreateReviewReqBody,
+  ReplyIdReqParams,
   ReplyReviewReqBody,
   ReviewIdReqParams,
   UpdateReviewReqBody
@@ -49,6 +50,14 @@ export const replyReviewController = async (
   const result = await reviewService.reply({ content: req.body.content, reviewId: req.params.reviewId, userId })
   return res.json({
     message: REVIEW_MESSAGES.REPLY_REVIEW_SUCCESS,
+    data: result
+  })
+}
+
+export const updateReplyController = async (req: Request<ReplyIdReqParams, any, ReplyReviewReqBody>, res: Response) => {
+  const result = await reviewService.updateReply({ content: req.body.content, replyId: req.params.replyId })
+  return res.json({
+    message: REVIEW_MESSAGES.UPDATE_REPLY_REVIEW_SUCCESS,
     data: result
   })
 }
