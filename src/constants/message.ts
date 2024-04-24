@@ -183,5 +183,6 @@ export const REVIEW_MESSAGES = {
   REPLY_ID_IS_REQUIRED: 'Reply id is required.',
   REPLY_ID_IS_INVALID: 'Invalid reply id.',
   REPLY_NOT_FOUND: 'Reply not found.',
-  DELETE_REPLY_SUCCESS: 'Delete reply successfully.'
+  DELETE_REPLY_SUCCESS: 'Delete reply successfully.',
+  GET_PRODUCT_REVIEWS_SUCCESS: 'Get a list of successful product reviews.'
 } as const

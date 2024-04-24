@@ -4,11 +4,12 @@ import {
   createReviewController,
   deleteReplyController,
   deleteReviewController,
+  getProductReviewsController,
   replyReviewController,
   updateReplyController,
   updateReviewController
 } from '~/controllers/reviews.controllers'
-import { filterReqBodyMiddleware } from '~/middlewares/common.middlewares'
+import { filterReqBodyMiddleware, paginationValidator } from '~/middlewares/common.middlewares'
 import { productIdValidator } from '~/middlewares/products.middlewares'
 import {
   authorOfReviewValidator,
@@ -83,6 +84,13 @@ reviewsRouter.delete(
   isAdminValidator,
   replyIdValidator,
   wrapRequestHandler(deleteReplyController)
+)
+
+reviewsRouter.get(
+  '/products/:productId',
+  productIdValidator,
+  paginationValidator,
+  wrapRequestHandler(getProductReviewsController)
 )
 
 export default reviewsRouter

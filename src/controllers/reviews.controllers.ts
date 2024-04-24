@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 
 import { REVIEW_MESSAGES } from '~/constants/message'
+import { PaginationReqQuery } from '~/models/requests/Common.requests'
 import { ProductIdReqParams } from '~/models/requests/Product.requests'
 import {
   CreateReviewReqBody,
@@ -66,5 +67,22 @@ export const deleteReplyController = async (req: Request<ReplyIdReqParams>, res:
   await reviewService.deleteReply(req.params.replyId)
   return res.json({
     message: REVIEW_MESSAGES.DELETE_REPLY_SUCCESS
+  })
+}
+
+export const getProductReviewsController = async (
+  req: Request<ProductIdReqParams, any, any, PaginationReqQuery>,
+  res: Response
+) => {
+  const { reviews, ...pagination } = await reviewService.getProductReviews({
+    productId: req.params.productId,
+    query: req.query
+  })
+  return res.json({
+    message: REVIEW_MESSAGES.GET_PRODUCT_REVIEWS_SUCCESS,
+    data: {
+      reviews,
+      pagination
+    }
   })
 }
