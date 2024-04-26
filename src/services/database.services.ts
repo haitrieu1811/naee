@@ -50,7 +50,7 @@ class DatabaseService {
       this.users.createIndex({ verifyEmailToken: 1 }),
       this.users.createIndex({ forgotPasswordToken: 1 }),
       this.users.createIndex({ _id: 1, password: 1 }),
-      this.users.createIndex({ phoneNumber: 1 }, { unique: true })
+      this.users.createIndex({ phoneNumber: 1 })
     ])
   }
 

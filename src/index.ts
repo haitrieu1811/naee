@@ -1,4 +1,5 @@
 import express from 'express'
+import cors, { CorsOptions } from 'cors'
 
 import { ENV_CONFIG } from '~/constants/config'
 import { defaultErrorHandler } from '~/middlewares/error.middlewares'
@@ -26,7 +27,12 @@ initFolders()
 const app = express()
 const port = ENV_CONFIG.PORT || 4000
 
+const corsOptions: CorsOptions = {
+  origin: ENV_CONFIG.CLIENT_URL
+}
+
 app.use(express.json())
+app.use(cors(corsOptions))
 app.use('/users', usersRouter)
 app.use('/files', filesRouter)
 app.use('/addresses', addressesRouter)
