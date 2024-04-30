@@ -11,6 +11,7 @@ import { VIET_NAM_PHONE_NUMBER_REGEX } from '~/constants/regex'
 import { ErrorWithStatus } from '~/models/Errors'
 import { TokenPayload } from '~/models/requests/User.requests'
 import databaseService from '~/services/database.services'
+import userService from '~/services/users.services'
 import { hashPassword } from '~/utils/crypto'
 import { verifyToken } from '~/utils/jwt'
 import { validate } from '~/utils/validation'
@@ -194,7 +195,7 @@ export const loginValidator = validate(
         custom: {
           options: async (value, { req }) => {
             const email = req.body.email
-            const user = await databaseService.users.findOne({
+            const user = await userService.aggregateUserDetail({
               email,
               password: hashPassword(value)
             })

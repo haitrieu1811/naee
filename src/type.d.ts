@@ -10,6 +10,6 @@ declare module 'express' {
     decodedRefreshToken?: TokenPayload
     decodedVerifyEmailToken?: TokenPayload
     decodedForgotPasswordToken?: TokenPayload
-    user?: WithId<User>
+    user?: LoggedUser
   }
 }

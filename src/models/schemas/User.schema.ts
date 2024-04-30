@@ -18,6 +18,19 @@ type UserConstructor = {
   updatedAt?: Date
 }
 
+export type LoggedUser = {
+  _id: ObjectId
+  email: string
+  fullName: string
+  phoneNumber: string
+  avatar: string
+  status: UserStatus
+  verify: UserVerifyStatus
+  role: UserRole
+  createdAt: Date
+  updatedAt: Date
+}
+
 export default class User {
   _id?: ObjectId
   email: string

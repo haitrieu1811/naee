@@ -27,24 +27,13 @@ export const registerController = async (req: Request<ParamsDictionary, any, Reg
 }
 
 export const loginController = async (req: Request<ParamsDictionary, any, LoginReqBody>, res: Response) => {
-  const user = req.user as WithId<User>
+  const user = req.user
   const result = await userService.login(user)
-  const userConfig = omit(user, [
-    'password',
-    'avatar',
-    'phoneNumber',
-    'verifyEmailToken',
-    'forgotPasswordToken',
-    'addresses',
-    'status',
-    'role',
-    'verify'
-  ])
   return res.json({
     message: USER_MESSAGES.LOGIN_SUCCESS,
     data: {
       ...result,
-      user: userConfig
+      user
     }
   })
 }

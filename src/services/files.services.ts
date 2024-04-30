@@ -1,10 +1,10 @@
-import { CompleteMultipartUploadCommandOutput } from '@aws-sdk/client-s3'
 import { Request } from 'express'
 import fsPromise from 'fs/promises'
 import { ObjectId } from 'mongodb'
 import path from 'path'
 import sharp from 'sharp'
 
+import { ENV_CONFIG } from '~/constants/config'
 import { UPLOAD_IMAGE_DIR } from '~/constants/dir'
 import { FileType } from '~/constants/enum'
 import File from '~/models/schemas/File.schema'
@@ -48,7 +48,7 @@ class FileService {
           _id: (addedImage as File)._id,
           name: newFullName,
           type: FileType.Image,
-          url: (s3Result as CompleteMultipartUploadCommandOutput).Location as string
+          url: `${ENV_CONFIG.HOST}/${ENV_CONFIG.STATIC_IMAGES_PATH}/${newFullName}`
         }
       })
     )

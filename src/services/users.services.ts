@@ -7,7 +7,7 @@ import { ENV_CONFIG } from '~/constants/config'
 import { TokenType, UserRole, UserStatus, UserVerifyStatus } from '~/constants/enum'
 import { RegisterReqBody, UpdateMeReqBody } from '~/models/requests/User.requests'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
-import User from '~/models/schemas/User.schema'
+import User, { LoggedUser } from '~/models/schemas/User.schema'
 import databaseService from '~/services/database.services'
 import { hashPassword } from '~/utils/crypto'
 import { sendForgotPasswordEmail, sendVerifyEmail } from '~/utils/email'
@@ -157,7 +157,53 @@ class UserService {
     }
   }
 
-  async login(user: WithId<User>) {
+  async aggregateUserDetail(match: any) {
+    const users = await databaseService.users
+      .aggregate([
+        {
+          $match: match
+        },
+        {
+          $lookup: {
+            from: 'files',
+            localField: 'avatar',
+            foreignField: '_id',
+            as: 'avatar'
+          }
+        },
+        {
+          $unwind: {
+            path: '$avatar',
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $addFields: {
+            avatar: {
+              $cond: {
+                if: '$avatar',
+                then: {
+                  $concat: [ENV_CONFIG.HOST, '/', ENV_CONFIG.STATIC_IMAGES_PATH, '/', '$avatar.name']
+                },
+                else: ''
+              }
+            }
+          }
+        },
+        {
+          $project: {
+            password: 0,
+            verifyEmailToken: 0,
+            forgotPasswordToken: 0,
+            addresses: 0
+          }
+        }
+      ])
+      .toArray()
+    return users[0]
+  }
+
+  async login(user: LoggedUser) {
     const { _id, verify, role, status } = user
     const [accessToken, refreshToken] = await this.signAccessAndRefreshToken({
       userId: _id.toString(),
@@ -204,7 +250,7 @@ class UserService {
   }
 
   async verifyEmail(userId: string) {
-    const user = await databaseService.users.findOneAndUpdate(
+    await databaseService.users.updateOne(
       {
         _id: new ObjectId(userId)
       },
@@ -218,6 +264,7 @@ class UserService {
         }
       }
     )
+    const user = await this.aggregateUserDetail({ _id: new ObjectId(userId) })
     const { _id, role, status, verify } = user as WithId<User>
     const [accessToken, refreshToken] = await this.signAccessAndRefreshToken({
       userId: _id.toString(),
@@ -225,21 +272,10 @@ class UserService {
       status,
       verify
     })
-    const userConfig = omit(user, [
-      'password',
-      'avatar',
-      'phoneNumber',
-      'verifyEmailToken',
-      'forgotPasswordToken',
-      'addresses',
-      'status',
-      'role',
-      'verify'
-    ])
     return {
       accessToken,
       refreshToken,
-      user: userConfig
+      user
     }
   }
 
@@ -373,24 +409,9 @@ class UserService {
   }
 
   async getMe(userId: string) {
-    const user = await databaseService.users.findOne(
-      {
-        _id: new ObjectId(userId)
-      },
-      {
-        projection: {
-          password: 0,
-          avatar: 0,
-          phoneNumber: 0,
-          verifyEmailToken: 0,
-          forgotPasswordToken: 0,
-          addresses: 0,
-          status: 0,
-          role: 0,
-          verify: 0
-        }
-      }
-    )
+    const user = await this.aggregateUserDetail({
+      _id: new ObjectId(userId)
+    })
     return {
       user
     }
@@ -404,7 +425,7 @@ class UserService {
       },
       isUndefined
     )
-    const user = await databaseService.users.findOneAndUpdate(
+    await databaseService.users.updateOne(
       {
         _id: new ObjectId(userId)
       },
@@ -413,23 +434,26 @@ class UserService {
         $currentDate: {
           updatedAt: true
         }
-      },
-      {
-        returnDocument: 'after',
-        projection: {
-          password: 0,
-          avatar: 0,
-          phoneNumber: 0,
-          verifyEmailToken: 0,
-          forgotPasswordToken: 0,
-          addresses: 0,
-          status: 0,
-          role: 0,
-          verify: 0
-        }
       }
     )
+    const user = await this.aggregateUserDetail({ _id: new ObjectId(userId) })
+    const [accessToken, refreshToken] = await this.signAccessAndRefreshToken({
+      userId,
+      role: user.role,
+      status: user.status,
+      verify: user.verify
+    })
+    const { iat, exp } = await this.decodeRefreshToken(refreshToken)
+    await databaseService.refreshTokens.insertOne(
+      new RefreshToken({
+        token: refreshToken,
+        iat,
+        exp
+      })
+    )
     return {
+      accessToken,
+      refreshToken,
       user
     }
   }
