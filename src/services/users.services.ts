@@ -377,7 +377,7 @@ class UserService {
   }
 
   async changePassword({ password, userId }: { password: string; userId: string }) {
-    const user = await databaseService.users.findOneAndUpdate(
+    await databaseService.users.updateOne(
       {
         _id: new ObjectId(userId)
       },
@@ -388,24 +388,9 @@ class UserService {
         $currentDate: {
           updatedAt: true
         }
-      },
-      {
-        projection: {
-          password: 0,
-          avatar: 0,
-          phoneNumber: 0,
-          verifyEmailToken: 0,
-          forgotPasswordToken: 0,
-          addresses: 0,
-          status: 0,
-          role: 0,
-          verify: 0
-        }
       }
     )
-    return {
-      user
-    }
+    return true
   }
 
   async getMe(userId: string) {

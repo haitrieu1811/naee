@@ -9,6 +9,7 @@ import {
   getProvincesController,
   getStreetsController,
   getWardsController,
+  setDefaultAddressController,
   updateAddressController
 } from '~/controllers/addresses.controllers'
 import { addressIdValidator, createAddressValidator } from '~/middlewares/addresses.middlewares'
@@ -53,6 +54,14 @@ addressesRouter.delete(
   verifiedUserValidator,
   addressIdValidator,
   wrapRequestHandler(deleteAddressController)
+)
+
+addressesRouter.post(
+  '/:addressId/set-default',
+  accessTokenValidator,
+  verifiedUserValidator,
+  addressIdValidator,
+  wrapRequestHandler(setDefaultAddressController)
 )
 
 addressesRouter.get(

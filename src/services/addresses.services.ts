@@ -80,6 +80,53 @@ class AddressService {
     return true
   }
 
+  async setDefault({ addressId, userId }: { addressId: string; userId: string }) {
+    const [updatedAddress] = await Promise.all([
+      databaseService.addresses.findOneAndUpdate(
+        {
+          _id: new ObjectId(addressId),
+          userId: new ObjectId(userId)
+        },
+        {
+          $set: {
+            isDefault: true
+          },
+          $currentDate: {
+            updatedAt: true
+          }
+        },
+        {
+          returnDocument: 'after'
+        }
+      ),
+      databaseService.addresses.updateMany(
+        {
+          $and: [
+            {
+              userId: new ObjectId(userId)
+            },
+            {
+              _id: {
+                $ne: new ObjectId(addressId)
+              }
+            }
+          ]
+        },
+        {
+          $set: {
+            isDefault: false
+          },
+          $currentDate: {
+            updatedAt: true
+          }
+        }
+      )
+    ])
+    return {
+      address: updatedAddress
+    }
+  }
+
   async getAll({ query, userId }: { query: PaginationReqQuery; userId: string }) {
     const { page, limit, skip } = paginationConfig(query)
     const match = { userId: new ObjectId(userId) }
@@ -197,15 +244,11 @@ class AddressService {
           },
           {
             $project: {
-              'province._id': 0,
               'province.id': 0,
               'province.districts': 0,
-              'district.id': 0,
               'district.wards': 0,
               'district.streets': 0,
-              'district.projects': 0,
-              'ward.id': 0,
-              'street.id': 0
+              'district.projects': 0
             }
           },
           {
@@ -348,15 +391,11 @@ class AddressService {
         },
         {
           $project: {
-            'province._id': 0,
             'province.id': 0,
             'province.districts': 0,
-            'district.id': 0,
             'district.wards': 0,
             'district.streets': 0,
-            'district.projects': 0,
-            'ward.id': 0,
-            'street.id': 0
+            'district.projects': 0
           }
         }
       ])

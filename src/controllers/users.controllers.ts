@@ -122,13 +122,12 @@ export const changePasswordController = async (
   res: Response
 ) => {
   const { userId } = req.decodedAuthorization as TokenPayload
-  const result = await userService.changePassword({
+  await userService.changePassword({
     userId,
     password: req.body.password
   })
   return res.json({
-    message: USER_MESSAGES.CHANGE_PASSWORD_SUCCESS,
-    data: result
+    message: USER_MESSAGES.CHANGE_PASSWORD_SUCCESS
   })
 }
 

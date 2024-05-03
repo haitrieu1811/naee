@@ -11,6 +11,7 @@ type AddressConstructor = {
   districtId: string
   wardId: string
   streetId?: string
+  specificAddress: string
   isDefault?: boolean
   createdAt?: Date
   updatedAt?: Date
@@ -26,6 +27,7 @@ export default class Address {
   districtId: string
   wardId: string
   streetId: string | null
+  specificAddress: string
   isDefault: boolean
   createdAt: Date
   updatedAt: Date
@@ -40,6 +42,7 @@ export default class Address {
     districtId,
     wardId,
     streetId,
+    specificAddress,
     isDefault,
     createdAt,
     updatedAt
@@ -54,6 +57,7 @@ export default class Address {
     this.districtId = districtId
     this.wardId = wardId
     this.streetId = streetId || null
+    this.specificAddress = specificAddress
     this.isDefault = isDefault || false
     this.createdAt = createdAt || date
     this.updatedAt = updatedAt || date

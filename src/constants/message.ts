@@ -81,7 +81,8 @@ export const ADDRESS_MESSAGES = {
   GET_DISTRICTS_SUCCESS: 'Get the list of districts successfully.',
   GET_ALL_PROVINCES_SUCCESS: 'Get a list of all successful provinces.',
   GET_WARDS_SUCCESS: 'Get the list of wards successfully.',
-  GET_STREETS_SUCCESS: 'Get the list of streets successfully.'
+  GET_STREETS_SUCCESS: 'Get the list of streets successfully.',
+  SET_DEFAULT_ADDRESS_SUCCESS: 'Set default address successfully.'
 } as const
 
 export const PRODUCT_MESSAGES = {
