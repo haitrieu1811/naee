@@ -1,4 +1,6 @@
 import { ObjectId } from 'mongodb'
+import omitBy from 'lodash/omitBy'
+import isUndefined from 'lodash/isUndefined'
 
 import { ENV_CONFIG } from '~/constants/config'
 import { ProductDiscountType } from '~/constants/enum'
@@ -6,7 +8,8 @@ import { PaginationReqQuery } from '~/models/requests/Common.requests'
 import {
   CreateBrandReqBody,
   CreateProductCategoryReqBody,
-  CreateProductReqBody
+  CreateProductReqBody,
+  UpdateProductCategoryReqBody
 } from '~/models/requests/Product.requests'
 import Brand from '~/models/schemas/Brand.schema'
 import Product from '~/models/schemas/Product.schema'
@@ -18,7 +21,7 @@ class ProductService {
   async createCategory({ dto, userId }: { dto: CreateProductCategoryReqBody; userId: string }) {
     const { insertedId } = await databaseService.productCategories.insertOne(
       new ProductCategory({
-        name: dto.name,
+        ...dto,
         userId: new ObjectId(userId)
       })
     )
@@ -28,7 +31,8 @@ class ProductService {
     }
   }
 
-  async updateCategory({ dto, categoryId }: { dto: CreateProductCategoryReqBody; categoryId: string }) {
+  async updateCategory({ dto, categoryId }: { dto: UpdateProductCategoryReqBody; categoryId: string }) {
+    const dtoConfig = omitBy(dto, isUndefined)
     const category = await databaseService.productCategories.findOneAndUpdate(
       {
         _id: new ObjectId(categoryId)
@@ -69,6 +73,22 @@ class ProductService {
       limit,
       totalRows,
       totalPages: Math.ceil(totalRows / limit)
+    }
+  }
+
+  async getOneCategory(categoryId: string) {
+    const category = await databaseService.productCategories.findOne(
+      {
+        _id: new ObjectId(categoryId)
+      },
+      {
+        projection: {
+          userId: 0
+        }
+      }
+    )
+    return {
+      category
     }
   }
 

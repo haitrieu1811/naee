@@ -9,6 +9,7 @@ import {
   deleteProductController,
   getAllBrandsController,
   getAllCategoriesController,
+  getOneCategoryController,
   getProductsController,
   updateBrandController,
   updateCategoryController,
@@ -47,7 +48,7 @@ productsRouter.patch(
   isAdminValidator,
   productCategoryIdValidator,
   createProductCategoryValidator,
-  filterReqBodyMiddleware<CreateProductCategoryReqBody>(['name']),
+  filterReqBodyMiddleware<CreateProductCategoryReqBody>(['name', 'description']),
   wrapRequestHandler(updateCategoryController)
 )
 
@@ -60,6 +61,12 @@ productsRouter.delete(
 )
 
 productsRouter.get('/categories/all', paginationValidator, wrapRequestHandler(getAllCategoriesController))
+
+productsRouter.get(
+  '/categories/:productCategoryId',
+  productCategoryIdValidator,
+  wrapRequestHandler(getOneCategoryController)
+)
 
 productsRouter.post(
   '/brands',

@@ -3,6 +3,12 @@ import { ProductDiscountType } from '~/constants/enum'
 
 export type CreateProductCategoryReqBody = {
   name: string
+  description?: string
+}
+
+export type UpdateProductCategoryReqBody = {
+  name?: string
+  description?: string
 }
 
 export type ProductCategoryIdReqParams = ParamsDictionary & {

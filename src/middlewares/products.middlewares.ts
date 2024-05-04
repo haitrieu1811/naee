@@ -110,6 +110,10 @@ export const createProductCategoryValidator = validate(
         notEmpty: {
           errorMessage: PRODUCT_MESSAGES.PRODUCT_CATEGORY_NAME_IS_REQUIRED
         }
+      },
+      description: {
+        optional: true,
+        trim: true
       }
     },
     ['body']

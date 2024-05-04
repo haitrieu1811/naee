@@ -58,6 +58,14 @@ export const getAllCategoriesController = async (
   })
 }
 
+export const getOneCategoryController = async (req: Request<ProductCategoryIdReqParams>, res: Response) => {
+  const result = await productService.getOneCategory(req.params.productCategoryId)
+  return res.json({
+    message: PRODUCT_MESSAGES.GET_ONE_CATEGORY_SUCCESS,
+    data: result
+  })
+}
+
 export const createBrandController = async (req: Request<ParamsDictionary, any, CreateBrandReqBody>, res: Response) => {
   const { userId } = req.decodedAuthorization as TokenPayload
   const result = await productService.createBrand({ dto: req.body, userId })

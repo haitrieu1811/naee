@@ -126,7 +126,8 @@ export const PRODUCT_MESSAGES = {
   GET_PRODUCTS_SUCCESS: 'Get the product list successfully.',
   PRODUCT_DISCOUNT_VALUE_CAN_NOT_BE_GREATER_THAN_ORIGINAL_PRICE:
     'Product discount value can not be greater than original price.',
-  PRODUCT_DISCOUNT_VALUE_CAN_NOT_BE_GREATER_THAN_100: 'Product discount value can not be greater than 100.'
+  PRODUCT_DISCOUNT_VALUE_CAN_NOT_BE_GREATER_THAN_100: 'Product discount value can not be greater than 100.',
+  GET_ONE_CATEGORY_SUCCESS: 'Get a successful product catalog.'
 } as const
 
 export const CART_MESSAGES = {
