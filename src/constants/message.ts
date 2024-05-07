@@ -96,7 +96,7 @@ export const PRODUCT_MESSAGES = {
   GET_ALL_CATEGORIES_SUCCESS: 'Get the list of all categories successfully.',
   CREATE_BRAND_SUCCESS: 'Create a successful brand.',
   UPDATE_BRAND_SUCCESS: 'Brand update successful.',
-  DELETE_BRAND_SUCCESS: 'Delete update successful.',
+  DELETE_BRAND_SUCCESS: 'Deleted brand successful.',
   GET_ALL_BRANDS_SUCCESS: 'Get a list of all successful brands.',
   BRAND_ID_IS_REQUIRED: 'Brand id is required.',
   BRAND_ID_IS_INVALID: 'Invalid brand id.',
@@ -127,7 +127,10 @@ export const PRODUCT_MESSAGES = {
   PRODUCT_DISCOUNT_VALUE_CAN_NOT_BE_GREATER_THAN_ORIGINAL_PRICE:
     'Product discount value can not be greater than original price.',
   PRODUCT_DISCOUNT_VALUE_CAN_NOT_BE_GREATER_THAN_100: 'Product discount value can not be greater than 100.',
-  GET_ONE_CATEGORY_SUCCESS: 'Get a successful product catalog.'
+  GET_ONE_CATEGORY_SUCCESS: 'Get a successful product catalog.',
+  GET_BRAND_SUCCESS: 'Get a successful brand.',
+  GET_PRODUCT_SUCCESS: 'Retrieve product information successfully.',
+  PRODUCT_STATUS_TYPE_IS_INVALID: 'Invalid product status type.'
 } as const
 
 export const CART_MESSAGES = {

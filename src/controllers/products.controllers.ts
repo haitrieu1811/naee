@@ -58,8 +58,8 @@ export const getAllCategoriesController = async (
   })
 }
 
-export const getOneCategoryController = async (req: Request<ProductCategoryIdReqParams>, res: Response) => {
-  const result = await productService.getOneCategory(req.params.productCategoryId)
+export const getCategoryController = async (req: Request<ProductCategoryIdReqParams>, res: Response) => {
+  const result = await productService.getCategory(req.params.productCategoryId)
   return res.json({
     message: PRODUCT_MESSAGES.GET_ONE_CATEGORY_SUCCESS,
     data: result
@@ -104,6 +104,14 @@ export const getAllBrandsController = async (
   })
 }
 
+export const getBrandController = async (req: Request<BrandIdReqParams>, res: Response) => {
+  const result = await productService.getBrand(req.params.brandId)
+  return res.json({
+    message: PRODUCT_MESSAGES.GET_BRAND_SUCCESS,
+    data: result
+  })
+}
+
 export const createProductController = async (
   req: Request<ParamsDictionary, any, CreateProductReqBody>,
   res: Response
@@ -145,5 +153,13 @@ export const getProductsController = async (
       products,
       pagination
     }
+  })
+}
+
+export const getProductController = async (req: Request<ProductIdReqParams>, res: Response) => {
+  const result = await productService.getProduct(req.params.productId)
+  return res.json({
+    message: PRODUCT_MESSAGES.GET_PRODUCT_SUCCESS,
+    data: result
   })
 }

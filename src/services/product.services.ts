@@ -76,7 +76,7 @@ class ProductService {
     }
   }
 
-  async getOneCategory(categoryId: string) {
+  async getCategory(categoryId: string) {
     const category = await databaseService.productCategories.findOne(
       {
         _id: new ObjectId(categoryId)
@@ -149,6 +149,22 @@ class ProductService {
       limit,
       totalRows,
       totalPages: Math.ceil(totalRows / limit)
+    }
+  }
+
+  async getBrand(brandId: string) {
+    const brand = await databaseService.brands.findOne(
+      {
+        _id: new ObjectId(brandId)
+      },
+      {
+        projection: {
+          userId: 0
+        }
+      }
+    )
+    return {
+      brand
     }
   }
 
@@ -338,6 +354,9 @@ class ProductService {
               photos: {
                 $first: '$photos'
               },
+              status: {
+                $first: '$status'
+              },
               originalPrice: {
                 $first: '$price'
               },
@@ -386,6 +405,201 @@ class ProductService {
       limit,
       totalRows,
       totalPages: Math.ceil(totalRows / limit)
+    }
+  }
+
+  async getProduct(productId: string) {
+    const products = await databaseService.products
+      .aggregate([
+        {
+          $match: {
+            _id: new ObjectId(productId)
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'userId',
+            foreignField: '_id',
+            as: 'author'
+          }
+        },
+        {
+          $unwind: {
+            path: '$author'
+          }
+        },
+        {
+          $lookup: {
+            from: 'productCategories',
+            localField: 'productCategoryId',
+            foreignField: '_id',
+            as: 'category'
+          }
+        },
+        {
+          $unwind: {
+            path: '$category'
+          }
+        },
+        {
+          $lookup: {
+            from: 'brands',
+            localField: 'brandId',
+            foreignField: '_id',
+            as: 'brand'
+          }
+        },
+        {
+          $unwind: {
+            path: '$brand'
+          }
+        },
+        {
+          $lookup: {
+            from: 'files',
+            localField: 'thumbnail',
+            foreignField: '_id',
+            as: 'thumbnail'
+          }
+        },
+        {
+          $unwind: {
+            path: '$thumbnail'
+          }
+        },
+        {
+          $lookup: {
+            from: 'files',
+            localField: 'photos',
+            foreignField: '_id',
+            as: 'photos'
+          }
+        },
+        {
+          $addFields: {
+            thumbnailConfig: {
+              _id: '$thumbnail._id',
+              url: {
+                $concat: [ENV_CONFIG.HOST, '/', ENV_CONFIG.STATIC_IMAGES_PATH, '/', '$thumbnail.name']
+              }
+            },
+            photos: {
+              $map: {
+                input: '$photos',
+                as: 'photo',
+                in: {
+                  _id: '$$photo._id',
+                  url: {
+                    $concat: [ENV_CONFIG.HOST, '/', ENV_CONFIG.STATIC_IMAGES_PATH, '/', '$$photo.name']
+                  }
+                }
+              }
+            },
+            priceAfterDiscount: {
+              $switch: {
+                branches: [
+                  {
+                    case: {
+                      $eq: ['$discountType', ProductDiscountType.Money]
+                    },
+                    then: {
+                      $subtract: ['$price', '$discountValue']
+                    }
+                  },
+                  {
+                    case: {
+                      $eq: ['$discountType', ProductDiscountType.Percent]
+                    },
+                    then: {
+                      $subtract: [
+                        '$price',
+                        {
+                          $multiply: [
+                            '$price',
+                            {
+                              $divide: ['$discountValue', 100]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ],
+                default: 'Did not match'
+              }
+            }
+          }
+        },
+        {
+          $group: {
+            _id: '$_id',
+            author: {
+              $first: '$author'
+            },
+            category: {
+              $first: '$category'
+            },
+            brand: {
+              $first: '$brand'
+            },
+            thumbnail: {
+              $first: '$thumbnailConfig'
+            },
+            name: {
+              $first: '$name'
+            },
+            description: {
+              $first: '$description'
+            },
+            photos: {
+              $first: '$photos'
+            },
+            status: {
+              $first: '$status'
+            },
+            originalPrice: {
+              $first: '$price'
+            },
+            priceAfterDiscount: {
+              $first: '$priceAfterDiscount'
+            },
+            availableCount: {
+              $first: '$availableCount'
+            },
+            discountType: {
+              $first: '$discountType'
+            },
+            discountValue: {
+              $first: '$discountValue'
+            },
+            createdAt: {
+              $first: '$createdAt'
+            },
+            updatedAt: {
+              $first: '$updatedAt'
+            }
+          }
+        },
+        {
+          $project: {
+            'author.password': 0,
+            'author.phoneNumber': 0,
+            'author.avatar': 0,
+            'author.verifyEmailToken': 0,
+            'author.forgotPasswordToken': 0,
+            'author.addresses': 0,
+            'author.status': 0,
+            'author.role': 0,
+            'author.verify': 0,
+            'category.userId': 0,
+            'brand.userId': 0
+          }
+        }
+      ])
+      .toArray()
+    return {
+      product: products[0]
     }
   }
 }

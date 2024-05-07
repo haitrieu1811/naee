@@ -9,7 +9,9 @@ import {
   deleteProductController,
   getAllBrandsController,
   getAllCategoriesController,
-  getOneCategoryController,
+  getBrandController,
+  getCategoryController,
+  getProductController,
   getProductsController,
   updateBrandController,
   updateCategoryController,
@@ -65,7 +67,7 @@ productsRouter.get('/categories/all', paginationValidator, wrapRequestHandler(ge
 productsRouter.get(
   '/categories/:productCategoryId',
   productCategoryIdValidator,
-  wrapRequestHandler(getOneCategoryController)
+  wrapRequestHandler(getCategoryController)
 )
 
 productsRouter.post(
@@ -82,7 +84,7 @@ productsRouter.put(
   isAdminValidator,
   brandIdValidator,
   createBrandValidator,
-  filterReqBodyMiddleware<CreateBrandReqBody>(['name', 'nation']),
+  filterReqBodyMiddleware<CreateBrandReqBody>(['name', 'nation', 'description']),
   wrapRequestHandler(updateBrandController)
 )
 
@@ -95,6 +97,8 @@ productsRouter.delete(
 )
 
 productsRouter.get('/brands/all', paginationValidator, wrapRequestHandler(getAllBrandsController))
+
+productsRouter.get('/brands/:brandId', brandIdValidator, wrapRequestHandler(getBrandController))
 
 productsRouter.post(
   '/',
@@ -111,7 +115,8 @@ productsRouter.post(
     'photos',
     'price',
     'productCategoryId',
-    'thumbnail'
+    'thumbnail',
+    'status'
   ]),
   wrapRequestHandler(createProductController)
 )
@@ -132,7 +137,8 @@ productsRouter.put(
     'photos',
     'price',
     'productCategoryId',
-    'thumbnail'
+    'thumbnail',
+    'status'
   ]),
   wrapRequestHandler(updateProductController)
 )
@@ -146,5 +152,7 @@ productsRouter.delete(
 )
 
 productsRouter.get('/', paginationValidator, wrapRequestHandler(getProductsController))
+
+productsRouter.get('/:productId', productIdValidator, wrapRequestHandler(getProductController))
 
 export default productsRouter

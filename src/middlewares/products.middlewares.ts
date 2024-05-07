@@ -1,7 +1,7 @@
 import { ParamSchema, checkSchema } from 'express-validator'
 import { ObjectId } from 'mongodb'
 
-import { HttpStatusCode, ProductDiscountType } from '~/constants/enum'
+import { HttpStatusCode, ProductDiscountType, ProductStatus } from '~/constants/enum'
 import { GENERAL_MESSAGES, PRODUCT_MESSAGES } from '~/constants/message'
 import { ErrorWithStatus } from '~/models/Errors'
 import databaseService from '~/services/database.services'
@@ -9,6 +9,7 @@ import { numberEnumToArray } from '~/utils/utils'
 import { validate } from '~/utils/validation'
 
 const productDiscountTypes = numberEnumToArray(ProductDiscountType)
+const statuses = numberEnumToArray(ProductStatus)
 
 const brandNameSchema: ParamSchema = {
   trim: true,
@@ -142,7 +143,11 @@ export const createBrandValidator = validate(
   checkSchema(
     {
       name: brandNameSchema,
-      nation: brandNationSchema
+      nation: brandNationSchema,
+      description: {
+        trim: true,
+        optional: true
+      }
     },
     ['body']
   )
@@ -223,6 +228,13 @@ export const createProductValidator = validate(
         isIn: {
           options: [productDiscountTypes],
           errorMessage: PRODUCT_MESSAGES.PRODUCT_DISCOUNT_TYPE_IS_INVALID
+        }
+      },
+      status: {
+        optional: true,
+        isIn: {
+          options: [statuses],
+          errorMessage: PRODUCT_MESSAGES.PRODUCT_STATUS_TYPE_IS_INVALID
         }
       },
       discountValue: {

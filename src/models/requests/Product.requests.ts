@@ -1,5 +1,5 @@
 import { ParamsDictionary } from 'express-serve-static-core'
-import { ProductDiscountType } from '~/constants/enum'
+import { ProductDiscountType, ProductStatus } from '~/constants/enum'
 
 export type CreateProductCategoryReqBody = {
   name: string
@@ -18,6 +18,7 @@ export type ProductCategoryIdReqParams = ParamsDictionary & {
 export type CreateBrandReqBody = {
   name: string
   nation: string
+  description?: string
 }
 
 export type BrandIdReqParams = ParamsDictionary & {
@@ -35,6 +36,7 @@ export type CreateProductReqBody = {
   price: number
   discountType?: ProductDiscountType
   discountValue?: number
+  status?: ProductStatus
 }
 
 export type ProductIdReqParams = ParamsDictionary & {
