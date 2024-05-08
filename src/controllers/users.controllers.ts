@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
-import omit from 'lodash/omit'
 import { WithId } from 'mongodb'
 
 import { USER_MESSAGES } from '~/constants/message'
+import { PaginationReqQuery } from '~/models/requests/Common.requests'
 import {
   ChangePasswordReqBody,
   ForgotPasswordTokenReqBody,
@@ -146,5 +146,19 @@ export const updateMeController = async (req: Request<ParamsDictionary, any, Upd
   return res.json({
     message: USER_MESSAGES.UDPATE_ME_SUCCESS,
     data: result
+  })
+}
+
+export const getAllCustomersController = async (
+  req: Request<ParamsDictionary, any, any, PaginationReqQuery>,
+  res: Response
+) => {
+  const { customers, ...pagination } = await userService.getAllCustomers(req.query)
+  return res.json({
+    message: USER_MESSAGES.GET_ALL_CUSTOMERS_SUCCESS,
+    data: {
+      customers,
+      pagination
+    }
   })
 }

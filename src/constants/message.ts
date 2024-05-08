@@ -44,7 +44,8 @@ export const USER_MESSAGES = {
   PHONE_NUMBER_ALREADY_EXISTS: 'Phone number already exists.',
   AVATAR_IS_INVALID: 'Invalid avatar.',
   USER_IS_UNVERIFIED: 'Your account has not been verified.',
-  PERMISSION_DENIED: 'Permission denied.'
+  PERMISSION_DENIED: 'Permission denied.',
+  GET_ALL_CUSTOMERS_SUCCESS: 'Get a list of all successful customers.'
 } as const
 
 export const FILE_MESSAGES = {

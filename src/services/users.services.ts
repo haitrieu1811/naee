@@ -1,10 +1,11 @@
-import omit from 'lodash/omit'
-import { ObjectId, WithId } from 'mongodb'
-import omitBy from 'lodash/omitBy'
 import isUndefined from 'lodash/isUndefined'
+import omit from 'lodash/omit'
+import omitBy from 'lodash/omitBy'
+import { ObjectId, WithId } from 'mongodb'
 
 import { ENV_CONFIG } from '~/constants/config'
 import { TokenType, UserRole, UserStatus, UserVerifyStatus } from '~/constants/enum'
+import { PaginationReqQuery } from '~/models/requests/Common.requests'
 import { RegisterReqBody, UpdateMeReqBody } from '~/models/requests/User.requests'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import User, { LoggedUser } from '~/models/schemas/User.schema'
@@ -12,6 +13,7 @@ import databaseService from '~/services/database.services'
 import { hashPassword } from '~/utils/crypto'
 import { sendForgotPasswordEmail, sendVerifyEmail } from '~/utils/email'
 import { signToken, verifyToken } from '~/utils/jwt'
+import { paginationConfig } from '~/utils/utils'
 
 type SignToken = {
   userId: string
@@ -440,6 +442,71 @@ class UserService {
       accessToken,
       refreshToken,
       user
+    }
+  }
+
+  async getAllCustomers(query: PaginationReqQuery) {
+    const { page, limit, skip } = paginationConfig(query)
+    const match = {
+      role: UserRole.User
+    }
+    const [users, totalRows] = await Promise.all([
+      databaseService.users
+        .aggregate([
+          {
+            $match: match
+          },
+          {
+            $lookup: {
+              from: 'files',
+              localField: 'avatar',
+              foreignField: '_id',
+              as: 'avatar'
+            }
+          },
+          {
+            $unwind: {
+              path: '$avatar',
+              preserveNullAndEmptyArrays: true
+            }
+          },
+          {
+            $addFields: {
+              avatar: {
+                $cond: {
+                  if: '$avatar',
+                  then: {
+                    $concat: [ENV_CONFIG.HOST, '/', ENV_CONFIG.STATIC_IMAGES_PATH, '/', '$avatar.name']
+                  },
+                  else: ''
+                }
+              }
+            }
+          },
+          {
+            $project: {
+              password: 0,
+              verifyEmailToken: 0,
+              forgotPasswordToken: 0,
+              addresses: 0
+            }
+          },
+          {
+            $skip: skip
+          },
+          {
+            $limit: limit
+          }
+        ])
+        .toArray(),
+      databaseService.users.countDocuments(match)
+    ])
+    return {
+      customers: users,
+      page,
+      limit,
+      totalRows,
+      totaPages: Math.ceil(totalRows / limit)
     }
   }
 }
