@@ -142,13 +142,13 @@ export const deleteProductController = async (req: Request<ProductIdReqParams>, 
   })
 }
 
-export const getProductsController = async (
+export const getAllProductsController = async (
   req: Request<ParamsDictionary, any, any, PaginationReqQuery>,
   res: Response
 ) => {
-  const { products, ...pagination } = await productService.getProducts(req.query)
+  const { products, ...pagination } = await productService.getAllProducts(req.query)
   return res.json({
-    message: PRODUCT_MESSAGES.GET_PRODUCTS_SUCCESS,
+    message: PRODUCT_MESSAGES.GET_ALL_PRODUCTS_SUCCESS,
     data: {
       products,
       pagination
@@ -161,5 +161,19 @@ export const getProductController = async (req: Request<ProductIdReqParams>, res
   return res.json({
     message: PRODUCT_MESSAGES.GET_PRODUCT_SUCCESS,
     data: result
+  })
+}
+
+export const getProductsController = async (
+  req: Request<ParamsDictionary, any, any, PaginationReqQuery>,
+  res: Response
+) => {
+  const { products, ...pagination } = await productService.getProducts(req.query)
+  return res.json({
+    message: PRODUCT_MESSAGES.GET_PRODUCTS_SUCCESS,
+    data: {
+      products,
+      pagination
+    }
   })
 }

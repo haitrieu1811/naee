@@ -131,7 +131,8 @@ export const PRODUCT_MESSAGES = {
   GET_ONE_CATEGORY_SUCCESS: 'Get a successful product catalog.',
   GET_BRAND_SUCCESS: 'Get a successful brand.',
   GET_PRODUCT_SUCCESS: 'Retrieve product information successfully.',
-  PRODUCT_STATUS_TYPE_IS_INVALID: 'Invalid product status type.'
+  PRODUCT_STATUS_TYPE_IS_INVALID: 'Invalid product status type.',
+  GET_ALL_PRODUCTS_SUCCESS: 'Get a list of all successful products.'
 } as const
 
 export const CART_MESSAGES = {

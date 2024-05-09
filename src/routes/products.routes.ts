@@ -9,6 +9,7 @@ import {
   deleteProductController,
   getAllBrandsController,
   getAllCategoriesController,
+  getAllProductsController,
   getBrandController,
   getCategoryController,
   getProductController,
@@ -152,6 +153,14 @@ productsRouter.delete(
 )
 
 productsRouter.get('/', paginationValidator, wrapRequestHandler(getProductsController))
+
+productsRouter.get(
+  '/all',
+  accessTokenValidator,
+  isAdminValidator,
+  paginationValidator,
+  wrapRequestHandler(getAllProductsController)
+)
 
 productsRouter.get('/:productId', productIdValidator, wrapRequestHandler(getProductController))
 
